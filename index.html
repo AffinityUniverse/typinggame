@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Affinity Universe Typing Game</title>
-<meta name="build" content="typinggame-v9-20261001">
+<meta name="build" content="typinggame-v10-20261001">
 <style>
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 :root{
@@ -164,7 +164,7 @@ const WORDS = [
   {ko:'스포이드',en:'eyedropper',cat:'tools',d:3},{ko:'돋보기',en:'magnifier',cat:'tools',d:3},{ko:'컴퍼스',en:'compass',cat:'tools',d:3},{ko:'키보드',en:'keyboard',cat:'tools',d:3},{ko:'태블릿',en:'tablet',cat:'tools',d:3},
 
   // 도형
-  {ko:'원',en:'circle',cat:'shapes',d:1},{ko:'별',en:'star',cat:'shapes',d:1},{ko:'점',en:'dot',cat:'shapes',d:1},{ko:'선',en:'line',cat:'shapes',d:1},{ko:'하트',en:'heart',cat:'shapes',d:1},{ko:'타원',en:'oval',cat:'shapes',d:1},
+  {ko:'원',en:'circle',cat:'shapes',d:1},{ko:'별',en:'star',cat:'shapes',d:1},{ko:'점',en:'dot',cat:'shapes',d:1},{ko:'하트',en:'heart',cat:'shapes',d:1},{ko:'타원',en:'oval',cat:'shapes',d:1},
   {ko:'삼각형',en:'triangle',cat:'shapes',d:2},{ko:'사각형',en:'square',cat:'shapes',d:2},{ko:'마름모',en:'diamond',cat:'shapes',d:2},{ko:'십자가',en:'cross',cat:'shapes',d:2},{ko:'화살표',en:'arrow',cat:'shapes',d:2},{ko:'오각형',en:'pentagon',cat:'shapes',d:2},
   {ko:'직사각형',en:'rectangle',cat:'shapes',d:3},{ko:'육각형',en:'hexagon',cat:'shapes',d:3},{ko:'팔각형',en:'octagon',cat:'shapes',d:3},{ko:'반원',en:'semicircle',cat:'shapes',d:3},{ko:'다각형',en:'polygon',cat:'shapes',d:3},
 
@@ -304,6 +304,18 @@ function playVoice(src,volume=1){
     const p=a.play();if(p&&p.catch)p.catch(()=>{});
   }catch(e){}
 }
+function stopVoice(src){
+  try{
+    const a=voiceCache[src];
+    if(a){a.pause();a.currentTime=0}
+  }catch(e){}
+}
+function stopPraiseVoices(){
+  [GREAT_VOICE_SRC,GOOD_JOB_VOICE_SRC,EXCELLENT_VOICE_SRC,COMBO_VOICE_SRC].forEach(stopVoice);
+}
+function clearPraiseFx(){
+  game.querySelectorAll('.praise').forEach(x=>x.remove());
+}
 function playGreatVoice(){playVoice(GREAT_VOICE_SRC,.68)}
 function playGoodJobVoice(){playVoice(GOOD_JOB_VOICE_SRC,.78)}
 function playExcellentVoice(){playVoice(EXCELLENT_VOICE_SRC,.82)}
@@ -388,20 +400,62 @@ function renderCard(c){c.el.style.transform=`translate3d(${c.x}px,${c.y}px,0)`}
 function removeCard(c){state.cards=state.cards.filter(x=>x!==c);setTimeout(()=>c.el.remove(),140)}
 function updateUI(){scoreEl.textContent=state.score;comboEl.textContent=state.combo;livesEl.textContent='❤️'.repeat(Math.max(0,state.lives))+'🖤'.repeat(Math.max(0,5-state.lives));levelStat.textContent=`${state.level} / 10`;levelTitle.textContent=`LEVEL ${state.level}`;progressText.textContent=`${state.correctInLevel} / 10`;progressFill.style.width=(state.correctInLevel*10)+'%';levelDesc.textContent=state.level<10?`정답 10개를 맞추면 LEVEL ${state.level+1}로 올라갑니다.`:'정답 10개를 맞히면 게임이 완료됩니다!';zoneLabel.textContent=language.value==='ko'?'KOREAN TYPING ZONE':'ENGLISH TYPING ZONE';input.placeholder=language.value==='ko'?'입력':'TYPE'}
 function praise(){
+  clearPraiseFx();
+  stopPraiseVoices();
   let text='GREAT!',cls='great',voice='great';
   if(state.combo>=5&&state.combo%5===0){text='EXCELLENT!';cls='excellent';voice='excellent'}
   else if(state.combo>=3&&state.combo%3===0){text=`COMBO x${state.combo}!`;cls='combo';voice='combo'}
   else if(state.correctTotal%2===0){text='GOOD JOB!';voice='goodjob'}
-  if(voice==='combo'||voice==='excellent')game.querySelectorAll('.praise').forEach(x=>x.remove());
   const p=document.createElement('div');p.className=`praise ${cls}`;p.textContent=text;game.appendChild(p);
   const colors=['#CA80CA','#3761FB','#F57A23','#F9D02E','#37B558'];
   for(let i=0;i<50;i++){const sp=document.createElement('i');sp.className='spark';const a=Math.random()*Math.PI*2,d=80+Math.random()*230;sp.style.setProperty('--x',Math.cos(a)*d+'px');sp.style.setProperty('--y',Math.sin(a)*d+'px');sp.style.setProperty('--c',colors[i%colors.length]);game.appendChild(sp);setTimeout(()=>sp.remove(),1050)}
   successSound(voice==='combo'||voice==='excellent'?'combo':'normal');
   if(voice==='great')playGreatVoice();else if(voice==='goodjob')playGoodJobVoice();else if(voice==='excellent')playExcellentVoice();else playComboVoice();
-  setTimeout(()=>p.remove(),1350)
+  setTimeout(()=>{if(p&&p.parentNode)p.remove()},1350)
 }
-function hit(c){c.el.classList.add('hit');removeCard(c);state.combo++;state.bestCombo=Math.max(state.bestCombo,state.combo);state.correctTotal++;state.correctInLevel++;state.score+=10+Math.min(60,state.combo*2)+state.level*2;praise();input.value='';liveText.textContent='정답!';if(state.correctInLevel>=10){if(state.level>=10){state.correctInLevel=10;updateUI();completeGame();return}else{state.correctInLevel=0;state.level++;showLevelUp()}}updateUI()}
-function showLevelUp(){game.querySelectorAll('.praise').forEach(x=>x.remove());const p=document.createElement('div');p.className='praise levelup';p.textContent='LEVEL UP!';game.appendChild(p);successSound('levelup');playSpeedUpVoice();refreshBgmTempo();setTimeout(()=>p.remove(),1300)}
+function hit(c){
+  c.el.classList.add('hit');
+  removeCard(c);
+  state.combo++;
+  state.bestCombo=Math.max(state.bestCombo,state.combo);
+  state.correctTotal++;
+  state.correctInLevel++;
+  state.score+=10+Math.min(60,state.combo*2)+state.level*2;
+  input.value='';
+  liveText.textContent='정답!';
+
+  const levelCleared=state.correctInLevel>=10;
+  if(levelCleared){
+    clearPraiseFx();
+    stopPraiseVoices();
+    if(state.level>=10){
+      state.correctInLevel=10;
+      updateUI();
+      completeGame();
+      return;
+    }
+    state.correctInLevel=0;
+    state.level++;
+    showLevelUp();
+    updateUI();
+    return;
+  }
+
+  praise();
+  updateUI();
+}
+function showLevelUp(){
+  clearPraiseFx();
+  stopPraiseVoices();
+  const p=document.createElement('div');
+  p.className='praise levelup';
+  p.textContent='LEVEL UP!';
+  game.appendChild(p);
+  successSound('levelup');
+  playSpeedUpVoice();
+  refreshBgmTempo();
+  setTimeout(()=>{if(p&&p.parentNode)p.remove()},1300);
+}
 function miss(c){removeCard(c);state.combo=0;state.lives--;recordMistake(c.word);game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');makeLostHeart();if(state.lives>0)playOhNo();updateUI();if(state.lives<=0)endGame()}
 function completeGame(){if(!state.running)return;stopBgm();const pb=$('#pauseBtn');pb.textContent='일시정지';pb.classList.remove('resume-active');if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;$('#pauseBtn').disabled=true;clearCards();saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');game.querySelectorAll('.praise,.spark').forEach(x=>x.remove());successSound('levelup');const o=document.createElement('div');o.className='gameover complete';o.innerHTML=`<strong>FINISH!</strong><span>${playerName.value||'Player'}님, LEVEL 10 완료! · ${state.score}점</span>`;game.appendChild(o)}
 function endGame(){stopBgm();const pb=$('#pauseBtn');pb.textContent='일시정지';pb.classList.remove('resume-active');if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;gameOverSound();playGameOverVoice();$('#pauseBtn').disabled=true;saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');const o=document.createElement('div');o.className='gameover';o.innerHTML=`<strong>GAME OVER</strong><span>${playerName.value||'Player'} · ${state.score}점 · LEVEL ${state.level}</span>`;game.appendChild(o)}
