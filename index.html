@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Affinity Universe Typing Game</title>
-<meta name="build" content="typinggame-v8-20261001">
+<meta name="build" content="typinggame-v9-20261001">
 <style>
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 :root{
@@ -27,14 +27,14 @@ button{cursor:pointer}
 .game{position:relative;height:min(650px,63vh);min-height:520px;border:1px solid #2b4778;border-radius:20px;overflow:hidden;background:linear-gradient(rgba(51,92,152,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(51,92,152,.13) 1px,transparent 1px),linear-gradient(180deg,#132b5b 0%,#0b1d43 100%);background-size:38px 38px,38px 38px,auto}.zone{position:absolute;left:14px;top:13px;background:#0d1934;border:1px solid #2b426c;color:#9eacc9;border-radius:9px;padding:7px 10px;font-size:11px;letter-spacing:.08em;z-index:5}.bottom-line{position:absolute;left:5%;right:5%;bottom:78px;height:2px;background:linear-gradient(90deg,transparent,#197dff 20%,#197dff 80%,transparent);box-shadow:0 0 15px rgba(25,125,255,.55)}
 .ready{position:absolute;inset:0;display:grid;place-content:center;text-align:center;z-index:4;pointer-events:none}.ready.hide{display:none}.ready strong{font-size:clamp(42px,6vw,74px);letter-spacing:-.05em}.ready span{font-size:17px;color:#c4cde0;margin-top:10px}.ready small{color:#7f8daa;margin-top:8px}
 .card{position:absolute;width:230px;min-height:105px;padding:12px;border-radius:20px;background:#fff;color:#15223f;box-shadow:0 15px 35px rgba(0,0,0,.28);will-change:transform;z-index:3}.card:before{content:'';position:absolute;inset:-2px;border-radius:22px;background:#fff;border:1px solid #d9e0eb;z-index:-1}.card .helper{position:absolute;left:50%;top:-76px;width:92px;height:92px;transform:translateX(-50%) rotate(-2deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.20));transform-origin:50% 88%;animation:helperHang .82s ease-in-out infinite alternate;z-index:4;pointer-events:none}.card .helper img{width:100%;height:100%;display:block;object-fit:contain}.card.danger{animation:cardUrgent .18s linear infinite alternate}.card.danger .helper{animation:helperPanic .12s linear infinite alternate}.card.danger .helper img{filter:drop-shadow(0 0 14px rgba(255,79,114,.75))}@keyframes helperHang{0%{transform:translateX(-50%) translateY(0) rotate(-3deg)}100%{transform:translateX(-50%) translateY(5px) rotate(3deg)}}@keyframes helperPanic{0%{transform:translateX(-50%) translate(-3px,1px) rotate(-8deg) scale(1.02)}100%{transform:translateX(-50%) translate(3px,-2px) rotate(8deg) scale(1.06)}}@keyframes cardUrgent{0%{filter:drop-shadow(0 0 0 rgba(255,79,114,0))}100%{filter:drop-shadow(0 0 16px rgba(255,79,114,.65))}}.wordbox{min-height:58px;border-radius:12px;background:#172441;color:#fff;display:grid;place-items:center;padding:8px}.word{font-size:clamp(21px,1.55vw,28px);line-height:1.08;letter-spacing:0;text-align:center;word-break:keep-all}.hint{margin-top:8px;text-align:center;color:#667087;font-size:13px}.card.danger:before{background:#fff;border-color:var(--danger);box-shadow:0 0 0 2px rgba(255,91,105,.30)}.card.danger .wordbox{background:#a82739}.card.hit{animation:cardHit .13s ease-out forwards}@keyframes cardHit{to{opacity:0}}
-.typingbar{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(620px,calc(100% - 130px));display:grid;grid-template-columns:1fr auto;gap:9px;align-items:center;background:rgba(7,15,34,.94);border:1px solid #31496f;border-radius:16px;padding:9px 12px;z-index:8;backdrop-filter:blur(12px)}.typingbar input{height:44px;border-radius:10px;border:0;padding:0 14px;color:#11203d;font-size:21px;font-weight:900;outline:none;letter-spacing:.01em}.typingbar input:disabled{opacity:.5}.typingbar .live{max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;text-align:right;font-size:12px}
+.typingbar{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(620px,calc(100% - 130px));display:grid;grid-template-columns:1fr auto;gap:9px;align-items:center;background:rgba(7,15,34,.94);border:1px solid #31496f;border-radius:16px;padding:9px 12px;z-index:8;backdrop-filter:blur(12px)}.typingbar input{height:44px;border-radius:10px;border:0;padding:0 14px;color:#11203d;font-size:21px;font-weight:500;outline:none;letter-spacing:.01em}.typingbar input::placeholder{font-weight:500;color:#667087;opacity:1}.typingbar input:disabled{opacity:.5}.typingbar .live{max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;text-align:right;font-size:12px}
 .praise{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);z-index:30;font-size:clamp(48px,9vw,115px);font-weight:1000;letter-spacing:-.055em;white-space:nowrap;pointer-events:none;-webkit-text-stroke:5px white;paint-order:stroke fill;animation:praise 1.25s cubic-bezier(.15,1.25,.28,1) forwards}.praise.levelup{top:38%;color:#ff8a35;text-shadow:0 6px 0 #b64d0d;font-size:clamp(44px,8vw,96px)}.praise.great{color:#40bf6b;text-shadow:0 6px 0 #1f783d}.praise.combo{color:#ffd335;text-shadow:0 6px 0 #b38b00}.praise.excellent{color:#d68bd5;text-shadow:0 6px 0 #925391}@keyframes praise{0%{opacity:0;transform:translate(-50%,-50%) scale(.25) rotate(-7deg)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.14) rotate(1deg)}68%{opacity:1;transform:translate(-50%,-56%) scale(1)}100%{opacity:0;transform:translate(-50%,-82%) scale(1.2)}}
 .spark{position:absolute;left:50%;top:44%;width:9px;height:9px;border-radius:50%;z-index:29;background:var(--c);pointer-events:none;animation:spark .95s ease-out forwards}@keyframes spark{0%{opacity:1;transform:translate(-50%,-50%) scale(.3)}100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.5)}}
 .shake{animation:shake .28s linear}@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
 .gameover{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(94,13,27,.28),transparent 34%),rgba(3,7,18,.82);z-index:25;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;backdrop-filter:blur(8px)}
 .gameover:before{content:'';position:absolute;width:min(760px,82%);height:250px;border-radius:36px;background:rgba(7,13,29,.78);border:1px solid rgba(255,255,255,.10);box-shadow:0 30px 80px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.04)}
 .gameover strong,.gameover span{position:relative;z-index:1}
-.gameover strong{font-size:clamp(54px,7vw,96px);line-height:.95;letter-spacing:.015em;color:#d31d37;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:0 14px 30px rgba(0,0,0,.46)}
+.gameover strong{font-size:clamp(54px,7vw,96px);line-height:.95;letter-spacing:.015em;color:#d31d37;-webkit-text-stroke:8px #fff;paint-order:stroke fill;text-shadow:none}
 .gameover span{font-size:18px;font-weight:750;margin-top:22px;color:#eef3ff;letter-spacing:.01em}
 .gameover.complete strong{color:#ffd33d;text-shadow:0 7px 0 #9b7800,0 16px 34px rgba(0,0,0,.42)}
 .gameover.complete{background:radial-gradient(circle at 50% 42%,rgba(255,211,61,.16),transparent 34%),rgba(3,7,18,.76)}
@@ -47,7 +47,7 @@ button{cursor:pointer}
 .pause-card{padding:30px 38px;border-radius:24px;background:rgba(7,16,39,.78);border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 55px rgba(0,0,0,.38)}
 .pause-card strong{display:block;font-size:clamp(54px,8vw,92px);line-height:.9;letter-spacing:.035em;color:#fff}
 .pause-card span{display:block;margin-top:18px;font-size:20px;font-weight:800;color:#fff}
-.pause-card small{display:block;margin-top:10px;font-size:14px;color:#a1aec9}
+.pause-card small{display:block;margin-top:10px;font-size:14px;color:#a1aec9}.pause-resume-word{color:#ff7a21;font-weight:800}
 .lost-heart{position:absolute;z-index:90;font-size:46px;pointer-events:none;animation:lostHeartDrop 1.25s cubic-bezier(.18,.7,.3,1) forwards}
 @keyframes lostHeartDrop{0%{transform:translate3d(0,-20px,0) scale(.8) rotate(0);opacity:0}18%{opacity:1;transform:translate3d(0,0,0) scale(1.22) rotate(-8deg)}100%{transform:translate3d(var(--tx,0px),360px,0) scale(.72) rotate(var(--rot,130deg));opacity:0}}
 .result-panels{display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.result-panels.show{display:grid}
@@ -113,7 +113,7 @@ button{cursor:pointer}
       <div class="pause-card">
         <strong>PAUSE</strong>
         <span>잠시 멈췄습니다.</span>
-        <small>계속하려면 상단 <계속하기> 버튼을 누르세요.</small>
+        <small>계속하려면 상단 <b class="pause-resume-word">계속하기</b> 버튼을 누르세요.</small>
       </div>
     </div>
     <div class="zone" id="zoneLabel">KOREAN TYPING ZONE</div>
@@ -308,21 +308,7 @@ function playGreatVoice(){playVoice(GREAT_VOICE_SRC,.68)}
 function playGoodJobVoice(){playVoice(GOOD_JOB_VOICE_SRC,.78)}
 function playExcellentVoice(){playVoice(EXCELLENT_VOICE_SRC,.82)}
 function playComboVoice(){playVoice(COMBO_VOICE_SRC,.70)}
-function playLevelAndSpeedUpVoice(){
-  try{
-    if(window.speechSynthesis&&window.SpeechSynthesisUtterance){
-      window.speechSynthesis.cancel();
-      const u=new SpeechSynthesisUtterance('Level and speed up!');
-      u.lang='en-US';
-      u.rate=.92;
-      u.pitch=1.08;
-      u.volume=1;
-      window.speechSynthesis.speak(u);
-      return;
-    }
-  }catch(e){}
-  playVoice(SPEED_UP_VOICE_SRC,1);
-}
+function playSpeedUpVoice(){playVoice(SPEED_UP_VOICE_SRC,1)}
 function playGameOverVoice(){playVoice(GAME_OVER_VOICE_SRC,1)}
 
 
@@ -400,7 +386,7 @@ function helperMarkup(ch){return characterMarkup(ch||selectedCharacter())}
 function spawnCard(){if(!state.running||state.paused)return;const p=currentPool();if(!p.length)return;const data=p[Math.floor(Math.random()*p.length)];rememberWord(data.word);const helperChar=getRandomCharacter(),el=document.createElement('div');el.className='card';el.innerHTML=`<div class="helper">${helperMarkup(helperChar)}</div><div class="wordbox"><div class="word">${data.word}</div></div><div class="hint">${categoryName(data.cat)}</div>`;game.appendChild(el);const width=window.innerWidth<700?190:230;const x=16+Math.random()*Math.max(20,game.clientWidth-width-32);const speed=(config().speed+Math.random()*9)*speedMultiplier();const card={el,word:data.word,x,y:-145,speed,danger:false};state.cards.push(card);renderCard(card)}
 function renderCard(c){c.el.style.transform=`translate3d(${c.x}px,${c.y}px,0)`}
 function removeCard(c){state.cards=state.cards.filter(x=>x!==c);setTimeout(()=>c.el.remove(),140)}
-function updateUI(){scoreEl.textContent=state.score;comboEl.textContent=state.combo;livesEl.textContent='❤️'.repeat(Math.max(0,state.lives))+'🖤'.repeat(Math.max(0,5-state.lives));levelStat.textContent=`${state.level} / 10`;levelTitle.textContent=`LEVEL ${state.level}`;progressText.textContent=`${state.correctInLevel} / 10`;progressFill.style.width=(state.correctInLevel*10)+'%';levelDesc.textContent=state.level<10?`정답 10개를 맞추면 LEVEL ${state.level+1}로 올라갑니다.`:'정답 10개를 맞히면 게임이 완료됩니다!';zoneLabel.textContent=language.value==='ko'?'KOREAN TYPING ZONE':'ENGLISH TYPING ZONE';input.placeholder=language.value==='ko'?'입력':'Type'}
+function updateUI(){scoreEl.textContent=state.score;comboEl.textContent=state.combo;livesEl.textContent='❤️'.repeat(Math.max(0,state.lives))+'🖤'.repeat(Math.max(0,5-state.lives));levelStat.textContent=`${state.level} / 10`;levelTitle.textContent=`LEVEL ${state.level}`;progressText.textContent=`${state.correctInLevel} / 10`;progressFill.style.width=(state.correctInLevel*10)+'%';levelDesc.textContent=state.level<10?`정답 10개를 맞추면 LEVEL ${state.level+1}로 올라갑니다.`:'정답 10개를 맞히면 게임이 완료됩니다!';zoneLabel.textContent=language.value==='ko'?'KOREAN TYPING ZONE':'ENGLISH TYPING ZONE';input.placeholder=language.value==='ko'?'입력':'TYPE'}
 function praise(){
   let text='GREAT!',cls='great',voice='great';
   if(state.combo>=5&&state.combo%5===0){text='EXCELLENT!';cls='excellent';voice='excellent'}
@@ -415,22 +401,23 @@ function praise(){
   setTimeout(()=>p.remove(),1350)
 }
 function hit(c){c.el.classList.add('hit');removeCard(c);state.combo++;state.bestCombo=Math.max(state.bestCombo,state.combo);state.correctTotal++;state.correctInLevel++;state.score+=10+Math.min(60,state.combo*2)+state.level*2;praise();input.value='';liveText.textContent='정답!';if(state.correctInLevel>=10){if(state.level>=10){state.correctInLevel=10;updateUI();completeGame();return}else{state.correctInLevel=0;state.level++;showLevelUp()}}updateUI()}
-function showLevelUp(){game.querySelectorAll('.praise').forEach(x=>x.remove());const p=document.createElement('div');p.className='praise levelup';p.textContent='LEVEL UP!';game.appendChild(p);successSound('levelup');playLevelAndSpeedUpVoice();refreshBgmTempo();setTimeout(()=>p.remove(),1300)}
+function showLevelUp(){game.querySelectorAll('.praise').forEach(x=>x.remove());const p=document.createElement('div');p.className='praise levelup';p.textContent='LEVEL UP!';game.appendChild(p);successSound('levelup');playSpeedUpVoice();refreshBgmTempo();setTimeout(()=>p.remove(),1300)}
 function miss(c){removeCard(c);state.combo=0;state.lives--;recordMistake(c.word);game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');makeLostHeart();if(state.lives>0)playOhNo();updateUI();if(state.lives<=0)endGame()}
-function completeGame(){if(!state.running)return;stopBgm();if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;$('#pauseBtn').disabled=true;clearCards();saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');game.querySelectorAll('.praise,.spark').forEach(x=>x.remove());successSound('levelup');const o=document.createElement('div');o.className='gameover complete';o.innerHTML=`<strong>FINISH!</strong><span>${playerName.value||'Player'}님, LEVEL 10 완료! · ${state.score}점</span>`;game.appendChild(o)}
-function endGame(){stopBgm();if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;gameOverSound();playGameOverVoice();$('#pauseBtn').disabled=true;saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');const o=document.createElement('div');o.className='gameover';o.innerHTML=`<strong>GAME OVER</strong><span>${playerName.value||'Player'} · ${state.score}점 · LEVEL ${state.level}</span>`;game.appendChild(o)}
+function completeGame(){if(!state.running)return;stopBgm();const pb=$('#pauseBtn');pb.textContent='일시정지';pb.classList.remove('resume-active');if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;$('#pauseBtn').disabled=true;clearCards();saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');game.querySelectorAll('.praise,.spark').forEach(x=>x.remove());successSound('levelup');const o=document.createElement('div');o.className='gameover complete';o.innerHTML=`<strong>FINISH!</strong><span>${playerName.value||'Player'}님, LEVEL 10 완료! · ${state.score}점</span>`;game.appendChild(o)}
+function endGame(){stopBgm();const pb=$('#pauseBtn');pb.textContent='일시정지';pb.classList.remove('resume-active');if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;gameOverSound();playGameOverVoice();$('#pauseBtn').disabled=true;saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');const o=document.createElement('div');o.className='gameover';o.innerHTML=`<strong>GAME OVER</strong><span>${playerName.value||'Player'} · ${state.score}점 · LEVEL ${state.level}</span>`;game.appendChild(o)}
 
 input.addEventListener('input',()=>{liveText.textContent=input.value||'-';const v=norm(input.value);if(!v||!state.running||state.paused)return;const match=state.cards.filter(c=>norm(c.word)===v).sort((a,b)=>b.y-a.y)[0];if(match)hit(match)});
 input.addEventListener('keydown',e=>{if(e.key==='Enter'&&norm(input.value)&&state.running&&!state.paused){const match=state.cards.some(c=>norm(c.word)===norm(input.value));if(!match){recordMistake(input.value);wrongSound();game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');state.combo=0;comboEl.textContent=0;liveText.textContent='다시 입력!';input.value=''}}});
 
 function clearCards(){state.cards.forEach(c=>c.el.remove());state.cards=[];game.querySelectorAll('.gameover,.praise,.spark').forEach(x=>x.remove())}
-function start(){unlockAudio();clearCards();if(pauseOverlay)pauseOverlay.classList.remove('show');$('#resultPanels')?.classList.remove('show');state.running=true;state.paused=false;state.score=0;state.combo=0;state.lives=5;state.level=1;state.correctInLevel=0;state.correctTotal=0;state.spawn=0;state.last=0;state.recentWords=[];state.bestCombo=0;state.mistakes={};input.disabled=false;input.value='';ready.classList.add('hide');$('#pauseBtn').disabled=false;language.disabled=true;difficulty.disabled=true;category.disabled=true;playerName.disabled=true;updateUI();input.focus();spawnCard();startBgm();requestAnimationFrame(loop)}
+function start(){unlockAudio();clearCards();if(pauseOverlay)pauseOverlay.classList.remove('show');$('#resultPanels')?.classList.remove('show');const pb=$('#pauseBtn');pb.textContent='일시정지';pb.classList.remove('resume-active');state.running=true;state.paused=false;state.score=0;state.combo=0;state.lives=5;state.level=1;state.correctInLevel=0;state.correctTotal=0;state.spawn=0;state.last=0;state.recentWords=[];state.bestCombo=0;state.mistakes={};input.disabled=false;input.value='';ready.classList.add('hide');$('#pauseBtn').disabled=false;language.disabled=true;difficulty.disabled=true;category.disabled=true;playerName.disabled=true;updateUI();input.focus();spawnCard();startBgm();requestAnimationFrame(loop)}
 function reset(){stopBgm();state.running=false;state.paused=false;if(pauseOverlay)pauseOverlay.classList.remove('show');$('#resultPanels')?.classList.remove('show');clearCards();input.disabled=true;input.value='';ready.classList.remove('hide');$('#pauseBtn').disabled=true;$('#pauseBtn').textContent='일시정지';$('#pauseBtn').classList.remove('resume-active');language.disabled=false;difficulty.disabled=false;category.disabled=false;playerName.disabled=false;state.score=0;state.combo=0;state.lives=5;state.level=1;state.correctInLevel=0;state.correctTotal=0;state.recentWords=[];state.bestCombo=0;state.mistakes={};renderReview();updateUI()}
 function restart(){reset();start()}
-function pause(){if(!state.running)return;state.paused=!state.paused;const pb=$('#pauseBtn');pb.textContent=state.paused?'계속하기':'일시정지';pb.classList.toggle('resume-active',state.paused);input.disabled=state.paused;if(pauseOverlay)pauseOverlay.classList.toggle('show',state.paused);if(state.paused)stopBgm();else{input.focus();startBgm()}}
+function pause(){if(!state.running)return;const pb=$('#pauseBtn');if(!state.paused){state.paused=true;pb.textContent='계속하기';pb.classList.add('resume-active');input.disabled=true;if(pauseOverlay)pauseOverlay.classList.add('show');stopBgm()}else{state.paused=false;pb.textContent='일시정지';pb.classList.remove('resume-active');input.disabled=false;if(pauseOverlay)pauseOverlay.classList.remove('show');input.focus();startBgm()}}
 function loop(t){if(!state.running)return;if(!state.last)state.last=t;const dt=Math.min(.04,(t-state.last)/1000);state.last=t;if(!state.paused){state.spawn+=dt;if(state.spawn>=spawnEvery()){state.spawn=0;spawnCard()}state.cards.slice().forEach(c=>{c.y+=c.speed*dt;if(!c.danger&&c.y>game.clientHeight-350){c.danger=true;c.el.classList.add('danger')}renderCard(c);if(c.y>game.clientHeight-120)miss(c)})}requestAnimationFrame(loop)}
 
-$('#startBtn').onclick=start;$('#resetBtn').onclick=restart;$('#pauseBtn').onclick=pause;$('#fullBtn').onclick=()=>{const app=$('#app');if(!document.fullscreenElement)app.requestFullscreen?.();else document.exitFullscreen?.()};
+function syncFullscreenButton(){const b=$('#fullBtn');if(!b)return;b.textContent=document.fullscreenElement?'전체화면 해제하기':'전체화면으로 보기'}
+$('#startBtn').onclick=start;$('#resetBtn').onclick=restart;$('#pauseBtn').onclick=pause;$('#fullBtn').onclick=async()=>{const app=$('#app');try{if(!document.fullscreenElement)await app.requestFullscreen?.();else await document.exitFullscreen?.()}catch(e){}syncFullscreenButton()};document.addEventListener('fullscreenchange',syncFullscreenButton);syncFullscreenButton();
 language.onchange=updateUI;category.onchange=updateUI;window.addEventListener('resize',()=>state.cards.forEach(c=>{c.x=Math.min(c.x,game.clientWidth-210);renderCard(c)}));
 renderRankings();renderReview();updateUI();
 </script>
