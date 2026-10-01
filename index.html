@@ -4,16 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Affinity Universe Typing Game</title>
-<meta name="build" content="typinggame-v2-20261001">
+<meta name="build" content="typinggame-v4-20261001">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+@font-face{
+  font-family:"Pinkfong Baby Shark";
+  src:
+    local("핑크퐁 아기상어체"),
+    local("Pinkfong Baby Shark Font"),
+    url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2501_1@1.0/PinkfongBabySharkFont-Regular.woff2") format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2501_1@1.0/PinkfongBabySharkFont-Regular.woff2") format("woff2");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
 :root{
   --navy:#0b1838;--navy2:#10234f;--panel:#111f42;--line:#2b3b61;
   --blue:#1677ff;--yellow:#ffd33d;--green:#39c36e;--pink:#ff67b4;--orange:#ff7a21;
   --text:#fff;--muted:#aebbd7;--danger:#ff5b69;
 }
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#e9edf3;color:var(--text);font-family:'Jua','Apple SD Gothic Neo','Noto Sans KR',sans-serif}
+*{box-sizing:border-box;font-family:"Pinkfong Baby Shark","Jua",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif!important}
+html,body{margin:0;min-height:100%;background:#e9edf3;color:var(--text);font-family:"Pinkfong Baby Shark","Jua",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
 button,input,select{font:inherit}
 button{cursor:pointer}
 .app{width:min(1500px,calc(100% - 24px));margin:16px auto;border-radius:28px;padding:26px;background:linear-gradient(180deg,#152b58 0%,#0d1c3e 36%,#09152f 100%);box-shadow:0 24px 70px rgba(12,25,55,.28);overflow:hidden;position:relative}
@@ -89,27 +100,49 @@ button{cursor:pointer}
 </main>
 <script>
 const WORDS = [
-  // fruit
-  {ko:'사과',en:'apple',cat:'fruit',d:1},{ko:'포도',en:'grape',cat:'fruit',d:1},{ko:'수박',en:'melon',cat:'fruit',d:1},{ko:'배',en:'pear',cat:'fruit',d:1},{ko:'귤',en:'orange',cat:'fruit',d:1},{ko:'바나나',en:'banana',cat:'fruit',d:1},{ko:'복숭아',en:'peach',cat:'fruit',d:2},{ko:'딸기',en:'berry',cat:'fruit',d:2},{ko:'레몬',en:'lemon',cat:'fruit',d:2},{ko:'체리',en:'cherry',cat:'fruit',d:2},
-  // animal
-  {ko:'고양이',en:'cat',cat:'animal',d:1},{ko:'강아지',en:'dog',cat:'animal',d:1},{ko:'토끼',en:'rabbit',cat:'animal',d:1},{ko:'곰',en:'bear',cat:'animal',d:1},{ko:'오리',en:'duck',cat:'animal',d:1},{ko:'여우',en:'fox',cat:'animal',d:1},{ko:'사자',en:'lion',cat:'animal',d:2},{ko:'호랑이',en:'tiger',cat:'animal',d:2},{ko:'원숭이',en:'monkey',cat:'animal',d:2},{ko:'코끼리',en:'elephant',cat:'animal',d:3},
-  // ocean
-  {ko:'바다',en:'sea',cat:'ocean',d:1},{ko:'물고기',en:'fish',cat:'ocean',d:1},{ko:'고래',en:'whale',cat:'ocean',d:1},{ko:'상어',en:'shark',cat:'ocean',d:1},{ko:'게',en:'crab',cat:'ocean',d:1},{ko:'파도',en:'wave',cat:'ocean',d:1},{ko:'문어',en:'octopus',cat:'ocean',d:2},{ko:'돌고래',en:'dolphin',cat:'ocean',d:2},{ko:'해마',en:'seahorse',cat:'ocean',d:3},{ko:'해파리',en:'jellyfish',cat:'ocean',d:3},
-  // plant
-  {ko:'꽃',en:'flower',cat:'plant',d:1},{ko:'나무',en:'tree',cat:'plant',d:1},{ko:'잎',en:'leaf',cat:'plant',d:1},{ko:'풀',en:'grass',cat:'plant',d:1},{ko:'씨앗',en:'seed',cat:'plant',d:1},{ko:'장미',en:'rose',cat:'plant',d:1},{ko:'선인장',en:'cactus',cat:'plant',d:2},{ko:'대나무',en:'bamboo',cat:'plant',d:2},{ko:'해바라기',en:'sunflower',cat:'plant',d:3},
-  // tools
-  {ko:'펜',en:'pen',cat:'tools',d:1},{ko:'연필',en:'pencil',cat:'tools',d:1},{ko:'붓',en:'brush',cat:'tools',d:1},{ko:'지우개',en:'eraser',cat:'tools',d:1},{ko:'가위',en:'scissors',cat:'tools',d:2},{ko:'자',en:'ruler',cat:'tools',d:1},{ko:'색연필',en:'crayon',cat:'tools',d:2},{ko:'스포이드',en:'dropper',cat:'tools',d:2},
-  // shapes
-  {ko:'원',en:'circle',cat:'shapes',d:1},{ko:'별',en:'star',cat:'shapes',d:1},{ko:'하트',en:'heart',cat:'shapes',d:1},{ko:'삼각형',en:'triangle',cat:'shapes',d:2},{ko:'사각형',en:'square',cat:'shapes',d:2},{ko:'타원',en:'oval',cat:'shapes',d:1},{ko:'선',en:'line',cat:'shapes',d:1},{ko:'점',en:'dot',cat:'shapes',d:1},
-  // design - elementary friendly
-  {ko:'색',en:'color',cat:'design',d:1},{ko:'글자',en:'text',cat:'design',d:1},{ko:'사진',en:'photo',cat:'design',d:1},{ko:'배경',en:'background',cat:'design',d:2},{ko:'도형',en:'shape',cat:'design',d:1},{ko:'레이어',en:'layer',cat:'design',d:2},{ko:'그림자',en:'shadow',cat:'design',d:2},{ko:'크기',en:'size',cat:'design',d:1},{ko:'회전',en:'rotate',cat:'design',d:2},{ko:'저장',en:'save',cat:'design',d:1},{ko:'복사',en:'copy',cat:'design',d:1},{ko:'붙이기',en:'paste',cat:'design',d:2}
+  // 과일
+  {ko:'사과',en:'apple',cat:'fruit',d:1},{ko:'배',en:'pear',cat:'fruit',d:1},{ko:'포도',en:'grape',cat:'fruit',d:1},{ko:'귤',en:'orange',cat:'fruit',d:1},{ko:'수박',en:'melon',cat:'fruit',d:1},{ko:'바나나',en:'banana',cat:'fruit',d:1},
+  {ko:'딸기',en:'strawberry',cat:'fruit',d:2},{ko:'복숭아',en:'peach',cat:'fruit',d:2},{ko:'레몬',en:'lemon',cat:'fruit',d:2},{ko:'체리',en:'cherry',cat:'fruit',d:2},{ko:'망고',en:'mango',cat:'fruit',d:2},{ko:'키위',en:'kiwi',cat:'fruit',d:2},
+  {ko:'파인애플',en:'pineapple',cat:'fruit',d:3},{ko:'블루베리',en:'blueberry',cat:'fruit',d:3},{ko:'자몽',en:'grapefruit',cat:'fruit',d:3},{ko:'석류',en:'pomegranate',cat:'fruit',d:3},{ko:'라즈베리',en:'raspberry',cat:'fruit',d:3},
+
+  // 동물
+  {ko:'개',en:'dog',cat:'animal',d:1},{ko:'고양이',en:'cat',cat:'animal',d:1},{ko:'곰',en:'bear',cat:'animal',d:1},{ko:'오리',en:'duck',cat:'animal',d:1},{ko:'여우',en:'fox',cat:'animal',d:1},{ko:'토끼',en:'rabbit',cat:'animal',d:1},
+  {ko:'사자',en:'lion',cat:'animal',d:2},{ko:'호랑이',en:'tiger',cat:'animal',d:2},{ko:'원숭이',en:'monkey',cat:'animal',d:2},{ko:'판다',en:'panda',cat:'animal',d:2},{ko:'기린',en:'giraffe',cat:'animal',d:2},{ko:'펭귄',en:'penguin',cat:'animal',d:2},
+  {ko:'코끼리',en:'elephant',cat:'animal',d:3},{ko:'캥거루',en:'kangaroo',cat:'animal',d:3},{ko:'악어',en:'crocodile',cat:'animal',d:3},{ko:'나비',en:'butterfly',cat:'animal',d:3},{ko:'카피바라',en:'capybara',cat:'animal',d:3},
+
+  // 바다
+  {ko:'바다',en:'sea',cat:'ocean',d:1},{ko:'물고기',en:'fish',cat:'ocean',d:1},{ko:'고래',en:'whale',cat:'ocean',d:1},{ko:'상어',en:'shark',cat:'ocean',d:1},{ko:'게',en:'crab',cat:'ocean',d:1},{ko:'파도',en:'wave',cat:'ocean',d:1},
+  {ko:'문어',en:'octopus',cat:'ocean',d:2},{ko:'돌고래',en:'dolphin',cat:'ocean',d:2},{ko:'조개',en:'shell',cat:'ocean',d:2},{ko:'새우',en:'shrimp',cat:'ocean',d:2},{ko:'산호',en:'coral',cat:'ocean',d:2},{ko:'거북이',en:'turtle',cat:'ocean',d:2},
+  {ko:'해파리',en:'jellyfish',cat:'ocean',d:3},{ko:'불가사리',en:'starfish',cat:'ocean',d:3},{ko:'해마',en:'seahorse',cat:'ocean',d:3},{ko:'가오리',en:'stingray',cat:'ocean',d:3},{ko:'잠수함',en:'submarine',cat:'ocean',d:3},
+
+  // 식물
+  {ko:'꽃',en:'flower',cat:'plant',d:1},{ko:'나무',en:'tree',cat:'plant',d:1},{ko:'잎',en:'leaf',cat:'plant',d:1},{ko:'풀',en:'grass',cat:'plant',d:1},{ko:'씨앗',en:'seed',cat:'plant',d:1},{ko:'장미',en:'rose',cat:'plant',d:1},
+  {ko:'선인장',en:'cactus',cat:'plant',d:2},{ko:'대나무',en:'bamboo',cat:'plant',d:2},{ko:'튤립',en:'tulip',cat:'plant',d:2},{ko:'민들레',en:'dandelion',cat:'plant',d:2},{ko:'버섯',en:'mushroom',cat:'plant',d:2},{ko:'덩굴',en:'vine',cat:'plant',d:2},
+  {ko:'해바라기',en:'sunflower',cat:'plant',d:3},{ko:'라벤더',en:'lavender',cat:'plant',d:3},{ko:'단풍나무',en:'maple',cat:'plant',d:3},{ko:'야자나무',en:'palm tree',cat:'plant',d:3},{ko:'꽃잎',en:'petal',cat:'plant',d:3},
+
+  // 도구
+  {ko:'펜',en:'pen',cat:'tools',d:1},{ko:'연필',en:'pencil',cat:'tools',d:1},{ko:'붓',en:'brush',cat:'tools',d:1},{ko:'자',en:'ruler',cat:'tools',d:1},{ko:'풀',en:'glue',cat:'tools',d:1},{ko:'종이',en:'paper',cat:'tools',d:1},
+  {ko:'지우개',en:'eraser',cat:'tools',d:2},{ko:'가위',en:'scissors',cat:'tools',d:2},{ko:'색연필',en:'crayon',cat:'tools',d:2},{ko:'마커',en:'marker',cat:'tools',d:2},{ko:'팔레트',en:'palette',cat:'tools',d:2},{ko:'스티커',en:'sticker',cat:'tools',d:2},
+  {ko:'스포이드',en:'eyedropper',cat:'tools',d:3},{ko:'돋보기',en:'magnifier',cat:'tools',d:3},{ko:'컴퍼스',en:'compass',cat:'tools',d:3},{ko:'키보드',en:'keyboard',cat:'tools',d:3},{ko:'태블릿',en:'tablet',cat:'tools',d:3},
+
+  // 도형
+  {ko:'원',en:'circle',cat:'shapes',d:1},{ko:'별',en:'star',cat:'shapes',d:1},{ko:'점',en:'dot',cat:'shapes',d:1},{ko:'선',en:'line',cat:'shapes',d:1},{ko:'하트',en:'heart',cat:'shapes',d:1},{ko:'타원',en:'oval',cat:'shapes',d:1},
+  {ko:'삼각형',en:'triangle',cat:'shapes',d:2},{ko:'사각형',en:'square',cat:'shapes',d:2},{ko:'마름모',en:'diamond',cat:'shapes',d:2},{ko:'십자가',en:'cross',cat:'shapes',d:2},{ko:'화살표',en:'arrow',cat:'shapes',d:2},{ko:'오각형',en:'pentagon',cat:'shapes',d:2},
+  {ko:'직사각형',en:'rectangle',cat:'shapes',d:3},{ko:'육각형',en:'hexagon',cat:'shapes',d:3},{ko:'팔각형',en:'octagon',cat:'shapes',d:3},{ko:'반원',en:'semicircle',cat:'shapes',d:3},{ko:'다각형',en:'polygon',cat:'shapes',d:3},
+
+  // 디자인
+  {ko:'색',en:'color',cat:'design',d:1},{ko:'글자',en:'text',cat:'design',d:1},{ko:'사진',en:'photo',cat:'design',d:1},{ko:'도형',en:'shape',cat:'design',d:1},{ko:'크기',en:'size',cat:'design',d:1},{ko:'저장',en:'save',cat:'design',d:1},
+  {ko:'배경',en:'background',cat:'design',d:2},{ko:'레이어',en:'layer',cat:'design',d:2},{ko:'그림자',en:'shadow',cat:'design',d:2},{ko:'회전',en:'rotate',cat:'design',d:2},{ko:'복사',en:'copy',cat:'design',d:2},{ko:'붙이기',en:'paste',cat:'design',d:2},
+  {ko:'그라디언트',en:'gradient',cat:'design',d:3},{ko:'투명도',en:'opacity',cat:'design',d:3},{ko:'정렬',en:'alignment',cat:'design',d:3},{ko:'레이아웃',en:'layout',cat:'design',d:3},{ko:'타이포그래피',en:'typography',cat:'design',d:3}
 ];
 const FALLBACK_CHARS=['🧒🏻','👧🏻','👦🏻','👧🏼','🧒🏽','👦🏼','👧🏽','🧒🏼','👦🏽','👧🏻','🧒🏻','👦🏻'];
 let CHARS=[];
 const $=s=>document.querySelector(s);
 const game=$('#game'), input=$('#typing'), scoreEl=$('#score'), comboEl=$('#combo'), livesEl=$('#lives'), levelStat=$('#levelStat'), levelTitle=$('#levelTitle'), levelDesc=$('#levelDesc'), progressText=$('#progressText'), progressFill=$('#progressFill'), ready=$('#ready'), language=$('#language'), difficulty=$('#difficulty'), category=$('#category'), liveText=$('#liveText'), zoneLabel=$('#zoneLabel'), playerName=$('#playerName'), chars=$('#characters');
-let state={running:false,paused:false,score:0,combo:0,lives:5,level:1,correctInLevel:0,correctTotal:0,cards:[],last:0,spawn:0,selected:0};
+let state={running:false,paused:false,score:0,combo:0,lives:5,level:1,correctInLevel:0,correctTotal:0,cards:[],last:0,spawn:0,selected:0,recentWords:[]};
 let audioCtx=null;
+const GAME_OVER_VOICE_SRC="data:audio/mpeg;base64,SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAwAAAAAAAAAAAAAAD/83DAAAAAAAAAAAAASW5mbwAAAA8AAAArAAASQwAPDxUVGxsgICAmJiwsMTExNzc9PUNDQ0hITk5UVFRaWl9fZWVla2twcHZ2dnx8goKHh4eNjZOTmJiYnp6kpKqqqq+vtbW7u7vBwcbGzMzM0tLX193d3ePj6enu7u709Pr6//8AAAAATGF2YzYxLjE5AAAAAAAAAAAAAAAAJAQPAAAAAAAAEkOzz6x+AAAAAAAAAAAAAAAAAP/zQMQAC3geab54xAAAKIySW3a4BoEjLG4ugYPuEEgnlzmCDi4Ph/6fOcu/1O/6nfsxP/8+vp/0//wwQZG40gP4OCQOJC1YzFX3eeMaxv0l3K9nhljlj3DeXC0eELRsCEwTcLJCJvFU//NCxC0UeI5oV1gYAC1oAguHHjib/OVoEL2Kafvg8dQZOGWGkLRFqKDLcebrR/+XZyEgSALj1rA7YPCzlICIc/VM7mL+4YfXyl0OGKjVZxEoE0l0UK3ceZKGbK2XrSVdupn1zo/DAW/d//NAxDcg+8pYC5poAU2seBugbD6HPDn6f7f4mgcwRA8g5gcwTcN8Pe3bqZLr16txgC+X0kDU2JQZCbpGPXeurZaFf/1clyXMEDR2QToKWgtPXX//9L//+fVIsdcqdlqFQqFQoNIoVAb/80LEDhcCbxpfiTgC+IJt18xM+XnPZqIhIGhA4kXQgNBuI5OycaGT1b8+eeenX4kEGcwgd6HL/IKMCOTMMIC//9V9qnuA8H5MaEGGg0Zv///yAlu5Cso7/2/pSGMSvu2xAJgF2vLZTWn/80DEDhfptu7/2BABcVAmBym2ESp7Oa+2hUWednCtJq2O7AUDAxRHKpgAYUV2yJbOer5iK66i0Z9yfRCaTuvw5mvghqockOfKL2bDdJ9Nj1W302acO4Ae6tX//BmchYY0NUhmWxEvgf/zQsQJFlFvExx7BQLmuT99YWilxrGMl3Qonpw0zg/Caj9Yn+UQPs7lquraSxoW0/5AZfQQZHoosBp29ABfnRW0AFQzyCxU7B4OwQcTk3f+S1uLgyRbFXCByhcWUlX9txIVVkAFYFjYD//zQMQLFgqzBnx6ywblQzMinLTebauJ6g3W94uEfWRMnNcKpdi01rq/UAZrndI/W6Z1AUvqLOLFzvuqBTfX9PoLv8j+MK3nN9S+dC/Ka2o8reQ30//VEyiV1Sp4MyRYVmsADYI5Srs0//NCxA0XAYsHHHpFJluRI00rv41sXSE42xCaw3THVEBTJwZZYpt5/XA1qvLZwdDDobOCx3Y7HxY5LeVVukMN/9Qv4Z/UBO+DeVBjIazjVHskH6xYMQ0jbqcXJhjsVVxbup9AJdAJvM6v//NAxA0TqLsHHnheQDTnaXjUGgYx3ivHDH/hOSxv4obovTjtnF208FRN5vI/eRMSzpUz9X5UyciUVe8gDhwkKraSAk3xjfWpuZds1ojghfkjrZZIAMDybVrF91LbP9/wifAOpoQf5fH/80LEGRO41wZaewSvByW38mbJjN/8k6PQ9HdvUoCHd8wYWJuRVnf6M////2YfC2ZphaygpblHdbdTau6rsz57b//6mFdU/+/0TcADk2QfuuCMHmQ/rPEsJlHU2c0sDv8z3pzQnvqYoJb/80DEJhRpQyr+ewRW1YUIuikAQRR3utlfl/qQWRwqD7iwELywWcpJ05F3IizijBY+fkbZEBpHeL305NzW2EBoFlXqzPl9k2DEbI+dJQLu9LmRJDzrexkFuDfNzdGo2LxSHhfs1ZNmYP/zQsQvFEjrAlx7RnqC6o4GHfEwMn4lEgfwYD8RX9GwzrBMiVOyAuCoVBHLnNLFqpoYpnfInVAuAIh3CPyFBQzfVt4sXxH6//wukPEo12rjalQgubq/+asKyzw/9DAxe2VM/qE/RSNzQ//zQMQ5E/la9xxDxFwLBhQNP3kcShrzqViIChxZ0OmZLfPEUYhHmHp3bW3XgABl9TV+LheCfS52ICJIUV8fXeeYcxjgsSn84QwEgyuyZEMG9bEkaZYGmZYGODTsNCbjT2JQWdgqayrn//NCxEQUQN8rHlvaikjFqCwMqPHRERCaRp2MBJ1FuFlgALLdC98fB3AxNevrjdRgTZ1uk6IJmTJUZ//xKnhaK//GYUUmmPScAOL9DEcVAXCRWm6IBG/EgICe5SgT2/6POZUSeX0KJuDj//NAxE8TOXbaXHnLRlBcwQA6HsHWcZgEjAENPr/+yj1/AloihFgPcMr67uJoCx/UbhZodjrmQWAke6FETcdPTpj4OFv0xfBGf0CTf1/5f83+j/4t+SAilt0IPtQpIZDWyWSAASMi4f7/80LEXRPyfs20e0r2Yg07tn5IGIebA4Ma8qSFsBJa6+P5Gwyt29qmBILl9BoFAmJep4+NTe7j4wDok/WTEk0jioZO/576w/ImlAAkFSdQFdTVhQBmlWE43ZYDBcJbl2lrUqjrTrvIKnn/80DEaRRJWwJ+W86uTEz7QfWbTB7HE2Q0KX2UxAR5mnmtMTBBAlKnwTDbhUSuS9yxcgDUPmw1xE1HdpPAVPTi4oMk5dVWl/PYj/7+fkHDtaeHccDCFhERaV0J8FXBWmRqp9fgA4PUEP/zQsRyHaJ20xzKRu3oEKJuZZJZFqwCYTdzLv1vd9FpnNJQZN2nQSyYrA0UtWZdSAmzmeuatSN8v8stGoL4llQUFA9lS9dJqPlaiVGo+UrUmKkKSKVMK4gC6v5bNmnxv7bf/spmnTQKXv/zQMRXHXoWwZbKRvJn9QdkEhRQccLsE4IHT6QiExcEgqR9QsRF//8T16Au0AD1gCgSIsTme5tZBnCM2s2d08HDIQHxRFmv5DKPZhmmwSJEx6e3SRCM8/+CYgSNnz+tGZ+6YBpet9sW//NCxDwccm65dsmLDkTqz3B4FAUWH2MVvUyqVravov3ZrJRyshkd5xgMQsRc5TkZGOYRLVqrK17iSF1uT7f/+6YeZowARuWEp0M1hy1lSvEggf/DDVNEFDDYdSNSvjXcNgQGn+0YUIWa//NAxCYYUS7KHsJGyv6TIkMf0SqX8qr55M0RER/+BQQCFUedQjXqodsXgm2XBUOh0gCwTZRQdBpoBKqWPCA9tE07//YoaL3E6sEAAZLQWAnKe3/vGTOqbrzE2w42BcyebciEIU91U5z/80LEHxQo2sW8w8yKW8+EWbsoBV9j0WVWGDiMu2XCQKicEw0wiAToIiQGKEBH/7GIAouEh6ksNJ69VzxwfLXMAAqa6NwYV8bwwfZOiaw6wx6wHFZ9QYSO4YsKubclGz+60m32YfOW0gz/80DEKhPY5s2+egyKs6/hFkg40iNeE0HrIuFv6nXDj0iFcJnWBUFYdO+QQd9bv///VUoIK9bZaAJ2o7DkL5C2CGCvJGjLBMISQrDLq9FQJFKCUXoYIrwMKCuTak2SlwgYykGlGzWMzf/zQsQ1E/GOqP7KRlbGq/dj/ydbSjbRvX4BOcIv8CmToac08JVB7jZAlu7f//8AFMCxKsyKh1k1OoJzi0Uf5sjGgqpfucuco68LcEulv/ZoBe37r+rT3/u72HBr5aD9voIv/V8SM9pkZ//zQMRBE7iWub5jzCPv6P+0I40suEiiDHtXSXwNLWCCoYF0n8GQzjDTanjIhlFmJFuWYRu9PVnajsstdpaSNU14rS5WySHfFGEpdjHqrYYF10DD1yEiJ7Vi5RRlIUeslM5XWlf////o//NCxE0TQG5UC1oAAqXOWR0HnJF9xeeFCSjqD/sw+WpUq44yYNBWwc8OZzUyIIAqQbuDD+Ow3LhOA2SGpB0ZF/mZuWzUnxJRRgwEHQh+H8iZhTUaFQRkHxiCg7RkhyRXf+mgaLTdkzcY//NAxFwkMvKcAZiIAMGXHeNEb4zQ+SUL3/9TbN7vJ88TJNFM6XDc2Lpw4X///7N/9A1LyJdUHwkIwwDP///CQfBZAX46BnBtujSFyTPMVvKDjJMEDQjiY8ZIowSwoDAnaebeQOqGZDr/80LEJh3hsqgrmZgAINnEYgmABqgA1wDQgZxBhMUANoAYAcaNMBlBoT5FjM1MS+YJokQPM6BtWauylpJu2p1JOy3/Wm/3U5qamxj6z9260zpo5B4+rRKfKBAEHf+qpWASA9v3LvxN0Or/80DEChXCYu2/zBACQR0mG/G68hLBMEeN9/bd162ZAQoNmY4V3PQQYXDOohi1aajzZ80is/Mlasif/60czgqP3pv1CFKqnKp5LVf/vywYLGwaevpHru///BWAAK3aN28W6ItIeOV9bv/zQsQOFrEa2R55huoJ0N57FSux3JuOpqWdStTtnOUCRyPjkMnxyCJiq0xgi6sW0g1c3jGVYUFwYXHtP+vBetpu9qVGxcRg6GGfgJsaImAc7f30f/lLhUoZtdQAA5t5JvxGhlNVIUWnFf/zQMQPFJjK5b57DBLctehDs0Djy8jhX05KwEaTUz4CPZuRL070/e0i4UBkTHAYDUgOAYDAqUQt/JEQMHmMV0wMwq6/2Iuam/ZWUOp/97iNipAAHt0k2AfL4Yunx0qaN4VkJlYtmpdX//NCxBcTgfLZnmBHNsbkPM15+DibZNPub1unggMVcSEAzIpObERz5IZoRi6//5Ixy3KfOi2mGoNBFDW/Yp8KjeLj7pvVUkKW62/8EhaFUUPx9yqqYCjTQ2ObNJEZnFIV/DsZ6bJAZw9i//NAxCUTYa7dvjDEuoacvTibz6eum315MyDFQ5w5FMuuQC4RTEX1WV3Au7iU6K/f+tosVybaWpinGnRAdlbkMiOsksqdp1v79Fu3guOI2XMLjxIU+PO1Ew/lFapmI6YUFMUIX5tmcIX/80LEMhMx7rF+WEduo18+lvDWdTN4oZ0G4JhFj/qjluSST///7Qomv+QJOxOgAIJiHqg+DBFNiUdIp3Rbeb5mDjh1EThYTGpVnSSaDwq4GomaE3iizvDh3qowg3Oms9j86f+3Sy/5nM3/80DEQRNp4qWeSYZeeHDmDIlCl7P/bTUQTRqqBbkUAAPFUjgkbRyZqseqagawW2GsF0nSD6As3ElVfLJU5u8VhgEHgKhyqqQXYUcNiDCoRlmub70j1/stYzb5/9K6w9iYhUdaNTiiH//zQsROFDH6jZ4yRst+wZk5BbkyrXFTM0F69qrGq7LDEwmKdOoacyFGCP0kRrOJzLuOrWXUK9GaDKy49o0KCVZ2gsHS3eSvPKlvDSniHJZX/1Hv1P6t+z5XdqWqBaQUsPIcazqr7X0e2//zQMRZEsjOSAp43kxQ26sbZqPSRk+fWl3UyLy6+67M+5gZkU1+/D7I1i6+zl1zh+6gZhPnPZbwkWxvLh8mRf0/elzURC1VFymyzXGafLpfckHFvXz83XoJu+zv9SgcU919T8W434pE//NCxGgRi1IcADhHPYKlPh62bYWr3CnXfSeM07WFKuAsE85jaSzjMiSEIsh1eA5ngRBiVK8ntLxRIBapaUciAyI1FzaGlG1H7zKH1K237V2KsOukdr8s/o/bfvCtqTq0RS48s10XaFMy//NAxH0TMAIcABjGuY8ywahpFg1CklVlYVqoHAKuLDjUrFbKYmWyiZrkmn6HiqUczyV10UnzVZ5liZlxJSlNsaab+PoWxyM20VySTuXt4rXV/4zVW//Zo3w6Xxv/p/GNS9jUur3jGpf/80LEiw44Aiz0CESYsd21E/9WNVbLqrtDql5RYmEIeEKvFJmi0aCHIQkTlhUP/yFDiFDt5CFCpCmvNELwhhTuisGvYKgymR//////yMjMj/xBIyMiMjIyGBPkZGZGRkZGZGX///yxlZX/80DErg6IAi2UCEa4gYIGCDBQwMEDCOksuf///5lLLLJZY6GRMrKCBhA+TEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqv/zQsTOE+sl9AAYRc2qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqv/zQMTaEDNc0AAIB8Wqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq";
+let gameOverAudio=null;
 
 function characterMarkup(ch){return ch&&ch.src?`<img src="${ch.src}" alt="${ch.name||'캐릭터'}">`:`<span class="face">${(ch&&ch.emoji)||'🧒🏻'}</span>`}
 function renderCharacters(){
@@ -161,17 +194,58 @@ async function loadShortcutCharacters(){
 }
 loadShortcutCharacters();
 
-function unlockAudio(){try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}catch(e){}}
+function unlockAudio(){
+  try{
+    if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    if(!gameOverAudio&&GAME_OVER_VOICE_SRC){
+      gameOverAudio=new Audio(GAME_OVER_VOICE_SRC);
+      gameOverAudio.preload='auto';
+      gameOverAudio.playsInline=true;
+      gameOverAudio.volume=1;
+      try{gameOverAudio.load()}catch(e){}
+    }
+  }catch(e){}
+}
 function tone(freq,delay=.0,dur=.12,type='triangle',vol=.12){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain(),t=audioCtx.currentTime+delay;o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+dur+.03)}
 function successSound(kind){unlockAudio();if(kind==='levelup'){tone(392,0,.13,'triangle',.13);tone(523,.10,.13,'triangle',.14);tone(659,.20,.16,'triangle',.15);tone(784,.33,.22,'triangle',.16)}else if(kind==='combo'){tone(330,0,.10,'square',.10);tone(494,.08,.12,'square',.11);tone(659,.17,.15,'triangle',.14);tone(988,.28,.20,'triangle',.15)}else{tone(659,0,.10,'triangle',.10);tone(880,.09,.14,'triangle',.11)}}
 function wrongSound(){unlockAudio();tone(220,0,.18,'sawtooth',.08);tone(165,.12,.22,'sawtooth',.06)}
+function gameOverSound(){
+  unlockAudio();
+  if(gameOverAudio){
+    try{gameOverAudio.pause();gameOverAudio.currentTime=0;const p=gameOverAudio.play();if(p&&p.catch)p.catch(()=>{});return}catch(e){}
+  }
+  tone(392,0,.18,'sawtooth',.14);tone(294,.16,.22,'sawtooth',.13);tone(196,.36,.34,'sawtooth',.14);
+}
 
 function currentPool(){
-  const lang=language.value,cat=category.value;
-  let maxD=state.level<=3?1:state.level<=7?2:3;
-  let p=WORDS.filter(w=>(cat==='all'||w.cat===cat)&&w.d<=maxD);
+  const lang=language.value,cat=category.value,diff=difficulty.value;
+  const allowed=diff==='easy'?[1]:diff==='normal'?[1,2]:[2,3];
+  let p=WORDS.filter(w=>(cat==='all'||w.cat===cat)&&allowed.includes(w.d));
   if(!p.length)p=WORDS.filter(w=>cat==='all'||w.cat===cat);
-  return p.map(w=>({word:w[lang],cat:w.cat}));
+
+  // 같은 단어가 연속해서 반복되지 않도록 최근 출제 단어와 현재 화면의 단어를 우선 제외합니다.
+  const active=new Set(state.cards.map(card=>norm(card.word)));
+  const recent=new Set((state.recentWords||[]).map(norm));
+  let fresh=p.filter(w=>!active.has(norm(w[lang]))&&!recent.has(norm(w[lang])));
+  if(!fresh.length)fresh=p.filter(w=>!active.has(norm(w[lang])));
+  if(!fresh.length)fresh=p;
+
+  // 보통은 d2, 도전은 d3가 더 자주 나오도록 가중치를 줍니다.
+  let weighted=[];
+  fresh.forEach(w=>{
+    let weight=1;
+    if(diff==='normal'&&w.d===2)weight=3;
+    if((diff==='challenge'||diff==='hard')&&w.d===3)weight=4;
+    for(let i=0;i<weight;i++)weighted.push(w);
+  });
+  return weighted.map(w=>({word:w[lang],cat:w.cat,d:w.d}));
+}
+function rememberWord(word){
+  state.recentWords=state.recentWords||[];
+  state.recentWords.push(word);
+  const keep=difficulty.value==='easy'?8:difficulty.value==='normal'?10:12;
+  if(state.recentWords.length>keep)state.recentWords.splice(0,state.recentWords.length-keep);
 }
 function config(){const d=difficulty.value;return d==='easy'?{speed:30,spawn:2.45}:d==='normal'?{speed:38,spawn:2.15}:{speed:46,spawn:1.9}}
 function speedMultiplier(){return Math.pow(1.16,state.level-1)}
@@ -182,7 +256,7 @@ function selectedCharacter(){return CHARS[state.selected]||CHARS[0]||{name:'캐�
 function getRandomCharacter(){return CHARS.length?CHARS[Math.floor(Math.random()*CHARS.length)]:selectedCharacter()}
 function helperMarkup(ch){return characterMarkup(ch||selectedCharacter())}
 
-function spawnCard(){if(!state.running||state.paused)return;const p=currentPool();if(!p.length)return;const data=p[Math.floor(Math.random()*p.length)],helperChar=getRandomCharacter(),el=document.createElement('div');el.className='card';el.innerHTML=`<div class="helper">${helperMarkup(helperChar)}</div><div class="wordbox"><div class="word">${data.word}</div></div><div class="hint">${categoryName(data.cat)}</div>`;game.appendChild(el);const width=window.innerWidth<700?190:230;const x=16+Math.random()*Math.max(20,game.clientWidth-width-32);const speed=(config().speed+Math.random()*9)*speedMultiplier();const card={el,word:data.word,x,y:-145,speed,danger:false};state.cards.push(card);renderCard(card)}
+function spawnCard(){if(!state.running||state.paused)return;const p=currentPool();if(!p.length)return;const data=p[Math.floor(Math.random()*p.length)];rememberWord(data.word);const helperChar=getRandomCharacter(),el=document.createElement('div');el.className='card';el.innerHTML=`<div class="helper">${helperMarkup(helperChar)}</div><div class="wordbox"><div class="word">${data.word}</div></div><div class="hint">${categoryName(data.cat)}</div>`;game.appendChild(el);const width=window.innerWidth<700?190:230;const x=16+Math.random()*Math.max(20,game.clientWidth-width-32);const speed=(config().speed+Math.random()*9)*speedMultiplier();const card={el,word:data.word,x,y:-145,speed,danger:false};state.cards.push(card);renderCard(card)}
 function renderCard(c){c.el.style.transform=`translate3d(${c.x}px,${c.y}px,0)`}
 function removeCard(c){state.cards=state.cards.filter(x=>x!==c);setTimeout(()=>c.el.remove(),140)}
 function updateUI(){scoreEl.textContent=state.score;comboEl.textContent=state.combo;livesEl.textContent='❤️'.repeat(Math.max(0,state.lives))+'🖤'.repeat(Math.max(0,5-state.lives));levelStat.textContent=`${state.level} / 10`;levelTitle.textContent=`LEVEL ${state.level}`;progressText.textContent=`${state.correctInLevel} / 10`;progressFill.style.width=(state.correctInLevel*10)+'%';levelDesc.textContent=state.level<10?`정답 10개를 맞추면 LEVEL ${state.level+1}로 올라갑니다.`:'정답 10개를 맞히면 게임이 완료됩니다!';zoneLabel.textContent=language.value==='ko'?'KOREAN TYPING ZONE':'ENGLISH TYPING ZONE';input.placeholder=language.value==='ko'?'한국어 단어 입력':'Type the English word'}
@@ -191,14 +265,14 @@ function hit(c){c.el.classList.add('hit');removeCard(c);state.combo++;state.corr
 function showLevelUp(){game.querySelectorAll('.praise').forEach(x=>x.remove());const p=document.createElement('div');p.className='praise levelup';p.textContent='LEVEL UP!';game.appendChild(p);successSound('levelup');setTimeout(()=>p.remove(),1300)}
 function miss(c){removeCard(c);state.combo=0;state.lives--;game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');wrongSound();updateUI();if(state.lives<=0)endGame()}
 function completeGame(){if(!state.running)return;state.running=false;state.paused=false;input.disabled=true;$('#pauseBtn').disabled=true;clearCards();game.querySelectorAll('.praise,.spark').forEach(x=>x.remove());successSound('levelup');const o=document.createElement('div');o.className='gameover complete';o.innerHTML=`<strong>FINISH!</strong><span>${playerName.value||'Player'}님, LEVEL 10 완료! · ${state.score}점</span>`;game.appendChild(o)}
-function endGame(){state.running=false;state.paused=false;input.disabled=true;$('#pauseBtn').disabled=true;const o=document.createElement('div');o.className='gameover';o.innerHTML=`<strong>GAME OVER</strong><span>${playerName.value||'Player'} · ${state.score}점 · LEVEL ${state.level}</span>`;game.appendChild(o)}
+function endGame(){state.running=false;state.paused=false;input.disabled=true;gameOverSound();$('#pauseBtn').disabled=true;const o=document.createElement('div');o.className='gameover';o.innerHTML=`<strong>GAME OVER</strong><span>${playerName.value||'Player'} · ${state.score}점 · LEVEL ${state.level}</span>`;game.appendChild(o)}
 
 input.addEventListener('input',()=>{liveText.textContent=input.value||'-';const v=norm(input.value);if(!v||!state.running||state.paused)return;const match=state.cards.filter(c=>norm(c.word)===v).sort((a,b)=>b.y-a.y)[0];if(match)hit(match)});
 input.addEventListener('keydown',e=>{if(e.key==='Enter'&&norm(input.value)&&state.running&&!state.paused){const match=state.cards.some(c=>norm(c.word)===norm(input.value));if(!match){wrongSound();game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');state.combo=0;comboEl.textContent=0;liveText.textContent='다시 입력!';input.value=''}}});
 
 function clearCards(){state.cards.forEach(c=>c.el.remove());state.cards=[];game.querySelectorAll('.gameover,.praise,.spark').forEach(x=>x.remove())}
-function start(){unlockAudio();clearCards();state.running=true;state.paused=false;state.score=0;state.combo=0;state.lives=5;state.level=1;state.correctInLevel=0;state.correctTotal=0;state.spawn=0;state.last=0;input.disabled=false;input.value='';ready.classList.add('hide');$('#pauseBtn').disabled=false;language.disabled=true;difficulty.disabled=true;category.disabled=true;playerName.disabled=true;updateUI();input.focus();spawnCard();requestAnimationFrame(loop)}
-function reset(){state.running=false;state.paused=false;clearCards();input.disabled=true;input.value='';ready.classList.remove('hide');$('#pauseBtn').disabled=true;$('#pauseBtn').textContent='일시정지';language.disabled=false;difficulty.disabled=false;category.disabled=false;playerName.disabled=false;state.score=0;state.combo=0;state.lives=5;state.level=1;state.correctInLevel=0;state.correctTotal=0;updateUI()}
+function start(){unlockAudio();clearCards();state.running=true;state.paused=false;state.score=0;state.combo=0;state.lives=5;state.level=1;state.correctInLevel=0;state.correctTotal=0;state.spawn=0;state.last=0;state.recentWords=[];input.disabled=false;input.value='';ready.classList.add('hide');$('#pauseBtn').disabled=false;language.disabled=true;difficulty.disabled=true;category.disabled=true;playerName.disabled=true;updateUI();input.focus();spawnCard();requestAnimationFrame(loop)}
+function reset(){state.running=false;state.paused=false;clearCards();input.disabled=true;input.value='';ready.classList.remove('hide');$('#pauseBtn').disabled=true;$('#pauseBtn').textContent='일시정지';language.disabled=false;difficulty.disabled=false;category.disabled=false;playerName.disabled=false;state.score=0;state.combo=0;state.lives=5;state.level=1;state.correctInLevel=0;state.correctTotal=0;state.recentWords=[];updateUI()}
 function restart(){reset();start()}
 function pause(){if(!state.running)return;state.paused=!state.paused;$('#pauseBtn').textContent=state.paused?'계속하기':'일시정지';input.disabled=state.paused;if(!state.paused)input.focus()}
 function loop(t){if(!state.running)return;if(!state.last)state.last=t;const dt=Math.min(.04,(t-state.last)/1000);state.last=t;if(!state.paused){state.spawn+=dt;if(state.spawn>=spawnEvery()){state.spawn=0;spawnCard()}state.cards.slice().forEach(c=>{c.y+=c.speed*dt;if(!c.danger&&c.y>game.clientHeight-350){c.danger=true;c.el.classList.add('danger')}renderCard(c);if(c.y>game.clientHeight-120)miss(c)})}requestAnimationFrame(loop)}
