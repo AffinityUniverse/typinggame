@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Affinity Universe Typing Game</title>
-<meta name="build" content="typinggame-v7-20261001">
+<meta name="build" content="typinggame-v8-20261001">
 <style>
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 :root{
@@ -18,7 +18,7 @@ button,input,select{font:inherit}
 button{cursor:pointer}
 .app{width:min(1500px,calc(100% - 24px));margin:16px auto;border-radius:28px;padding:26px;background:linear-gradient(180deg,#152b58 0%,#0d1c3e 36%,#09152f 100%);box-shadow:0 24px 70px rgba(12,25,55,.28);overflow:hidden;position:relative}
 .header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start}
-.kicker{font-size:12px;letter-spacing:.14em;color:#82adff;font-weight:900}.header h1{font-size:clamp(34px,4.4vw,58px);line-height:.95;margin:12px 0 8px;letter-spacing:.015em}.header p{margin:0;color:#c3cde1;font-size:16px}
+.kicker{font-size:12px;letter-spacing:.14em;color:var(--blue);font-weight:900}.header h1{font-size:clamp(34px,4.4vw,58px);line-height:.95;margin:12px 0 8px;letter-spacing:.015em}.header p{margin:0;color:#c3cde1;font-size:16px}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:10px;min-width:min(620px,52%)}.stat{background:#0f1d3c;border:1px solid #304165;border-radius:16px;padding:14px 14px 12px;text-align:center}.stat span{display:block;color:#9eacc8;font-size:12px;margin-bottom:5px}.stat strong{font-size:28px}.hearts{font-size:24px;letter-spacing:2px}
 .toolbar{display:flex;gap:10px;margin:22px 0 12px;flex-wrap:wrap}.btn{height:44px;padding:0 18px;border-radius:12px;border:1px solid #31456e;background:#0e1c39;color:#fff}.btn.primary{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 3px rgba(22,119,255,.1)}.btn.resume-active{background:#ff7a21!important;border-color:#ff7a21!important;color:#fff!important;box-shadow:0 0 0 3px rgba(255,122,33,.18),0 8px 22px rgba(255,122,33,.28)!important}.btn:disabled{opacity:.45;cursor:not-allowed}
 .setup{background:#0e1c39;border:1px solid #2d3f63;border-radius:17px;padding:14px}.setup-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr 1.15fr;gap:10px}.field{background:#0c1934;border:1px solid #2c3d61;border-radius:14px;padding:12px}.field label{display:block;font-size:13px;margin-bottom:8px}.field input,.field select{width:100%;height:42px;border:1px solid #385078;border-radius:10px;background:#0c1934;color:#fff;padding:0 12px;outline:none}.field input:focus,.field select:focus{border-color:#4d95ff}
@@ -34,7 +34,7 @@ button{cursor:pointer}
 .gameover{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(94,13,27,.28),transparent 34%),rgba(3,7,18,.82);z-index:25;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;backdrop-filter:blur(8px)}
 .gameover:before{content:'';position:absolute;width:min(760px,82%);height:250px;border-radius:36px;background:rgba(7,13,29,.78);border:1px solid rgba(255,255,255,.10);box-shadow:0 30px 80px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.04)}
 .gameover strong,.gameover span{position:relative;z-index:1}
-.gameover strong{font-size:clamp(54px,7vw,96px);line-height:.95;letter-spacing:.015em;color:#d31d37;-webkit-text-stroke:4px #fff;paint-order:stroke fill;text-shadow:0 7px 0 #7d1021,0 16px 34px rgba(0,0,0,.52)}
+.gameover strong{font-size:clamp(54px,7vw,96px);line-height:.95;letter-spacing:.015em;color:#d31d37;-webkit-text-stroke:7px #fff;paint-order:stroke fill;text-shadow:0 14px 30px rgba(0,0,0,.46)}
 .gameover span{font-size:18px;font-weight:750;margin-top:22px;color:#eef3ff;letter-spacing:.01em}
 .gameover.complete strong{color:#ffd33d;text-shadow:0 7px 0 #9b7800,0 16px 34px rgba(0,0,0,.42)}
 .gameover.complete{background:radial-gradient(circle at 50% 42%,rgba(255,211,61,.16),transparent 34%),rgba(3,7,18,.76)}
@@ -72,7 +72,7 @@ button{cursor:pointer}
     <div>
       <div class="kicker">AFFINITY UNIVERSE TRAINING</div>
       <h1>타이핑 게임</h1>
-      <p>위에서 내려오는 쉬운 단어를 보고 똑같이 입력해 보세요.</p>
+      <p>위에서 내려오는 단어를 보고 똑같이 입력해 보세요.</p>
     </div>
     <div class="stats">
       <div class="stat"><span>점수</span><strong id="score">0</strong></div>
@@ -308,7 +308,21 @@ function playGreatVoice(){playVoice(GREAT_VOICE_SRC,.68)}
 function playGoodJobVoice(){playVoice(GOOD_JOB_VOICE_SRC,.78)}
 function playExcellentVoice(){playVoice(EXCELLENT_VOICE_SRC,.82)}
 function playComboVoice(){playVoice(COMBO_VOICE_SRC,.70)}
-function playSpeedUpVoice(){playVoice(SPEED_UP_VOICE_SRC,1)}
+function playLevelAndSpeedUpVoice(){
+  try{
+    if(window.speechSynthesis&&window.SpeechSynthesisUtterance){
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance('Level and speed up!');
+      u.lang='en-US';
+      u.rate=.92;
+      u.pitch=1.08;
+      u.volume=1;
+      window.speechSynthesis.speak(u);
+      return;
+    }
+  }catch(e){}
+  playVoice(SPEED_UP_VOICE_SRC,1);
+}
 function playGameOverVoice(){playVoice(GAME_OVER_VOICE_SRC,1)}
 
 
@@ -401,7 +415,7 @@ function praise(){
   setTimeout(()=>p.remove(),1350)
 }
 function hit(c){c.el.classList.add('hit');removeCard(c);state.combo++;state.bestCombo=Math.max(state.bestCombo,state.combo);state.correctTotal++;state.correctInLevel++;state.score+=10+Math.min(60,state.combo*2)+state.level*2;praise();input.value='';liveText.textContent='정답!';if(state.correctInLevel>=10){if(state.level>=10){state.correctInLevel=10;updateUI();completeGame();return}else{state.correctInLevel=0;state.level++;showLevelUp()}}updateUI()}
-function showLevelUp(){game.querySelectorAll('.praise').forEach(x=>x.remove());const p=document.createElement('div');p.className='praise levelup';p.textContent='LEVEL UP!';game.appendChild(p);successSound('levelup');playSpeedUpVoice();refreshBgmTempo();setTimeout(()=>p.remove(),1300)}
+function showLevelUp(){game.querySelectorAll('.praise').forEach(x=>x.remove());const p=document.createElement('div');p.className='praise levelup';p.textContent='LEVEL UP!';game.appendChild(p);successSound('levelup');playLevelAndSpeedUpVoice();refreshBgmTempo();setTimeout(()=>p.remove(),1300)}
 function miss(c){removeCard(c);state.combo=0;state.lives--;recordMistake(c.word);game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');makeLostHeart();if(state.lives>0)playOhNo();updateUI();if(state.lives<=0)endGame()}
 function completeGame(){if(!state.running)return;stopBgm();if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;$('#pauseBtn').disabled=true;clearCards();saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');game.querySelectorAll('.praise,.spark').forEach(x=>x.remove());successSound('levelup');const o=document.createElement('div');o.className='gameover complete';o.innerHTML=`<strong>FINISH!</strong><span>${playerName.value||'Player'}님, LEVEL 10 완료! · ${state.score}점</span>`;game.appendChild(o)}
 function endGame(){stopBgm();if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;gameOverSound();playGameOverVoice();$('#pauseBtn').disabled=true;saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');const o=document.createElement('div');o.className='gameover';o.innerHTML=`<strong>GAME OVER</strong><span>${playerName.value||'Player'} · ${state.score}점 · LEVEL ${state.level}</span>`;game.appendChild(o)}
