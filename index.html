@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Affinity Universe Typing Game</title>
-<meta name="build" content="typinggame-v14-20261002">
+<meta name="build" content="typinggame-v15-20261002">
 <style>
 @font-face{
   font-family:"Pinkfong Baby Shark";
@@ -415,10 +415,29 @@ function soundButtonClick(){
   tone(1320,.045,.07,'triangle',.14);
   tone(1760,.105,.06,'sine',.10);
 }
+function playFartVoice(){
+  unlockAudio();
+  try{
+    const a=new Audio(FART_VOICE_SRC);
+    a.preload='auto';
+    a.playsInline=true;
+    a.volume=.55;
+    a.playbackRate=.92+Math.random()*.16;
+    const p=a.play();
+    if(p&&p.catch)p.catch(()=>{});
+  }catch(e){
+    playVoice(FART_VOICE_SRC,.55);
+  }
+}
+function soundFartLong(){playFartVoice()}
 function playWrongKeySound(){
   stopPraiseVoices();
   playVoice(WRONG_BEEP_VOICE_SRC,1);
-  setTimeout(()=>playVoice(FART_VOICE_SRC,.55),760);
+  setTimeout(()=>soundFartLong(),760);
+}
+function playMissedCardSound(){
+  playOhNo();
+  setTimeout(()=>soundFartLong(),760);
 }
 function gameOverSound(){
   unlockAudio();
@@ -693,7 +712,7 @@ function showLevelUp(){
   sirenFlash();
   refreshBgmTempo();
 }
-function miss(c){const stinkX=c.x+(c.el.offsetWidth||230)/2;const stinkY=Math.min(game.clientHeight-90,c.y+60);removeCard(c);state.combo=0;state.lives--;recordMistake(c.word);game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');makeLostHeart();makeStink(stinkX,stinkY,true);if(state.lives>0)playOhNo();updateUI();if(state.lives<=0)endGame()}
+function miss(c){const stinkX=c.x+(c.el.offsetWidth||230)/2;const stinkY=Math.min(game.clientHeight-90,c.y+60);removeCard(c);state.combo=0;state.lives--;recordMistake(c.word);game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');makeLostHeart();makeStink(stinkX,stinkY,true);if(state.lives>0)playMissedCardSound();updateUI();if(state.lives<=0)endGame()}
 function completeGame(){if(!state.running)return;stopBgm();const pb=$('#pauseBtn');pb.textContent='일시정지';pb.classList.remove('resume-active');if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;$('#startBtn').disabled=false;$('#pauseBtn').disabled=true;clearCards();saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');game.querySelectorAll('.praise,.spark').forEach(x=>x.remove());successSound('levelup');const o=document.createElement('div');o.className='gameover complete';o.innerHTML=`<strong>FINISH!</strong><span>${playerName.value||'Player'}님, LEVEL 10 완료! · ${state.score}점</span>`;game.appendChild(o)}
 function endGame(){stopBgm();const pb=$('#pauseBtn');pb.textContent='일시정지';pb.classList.remove('resume-active');if(pauseOverlay)pauseOverlay.classList.remove('show');state.running=false;state.paused=false;input.disabled=true;gameOverSound();playGameOverVoice();$('#startBtn').disabled=false;$('#pauseBtn').disabled=true;saveCurrentRanking();renderReview();$('#resultPanels')?.classList.add('show');const o=document.createElement('div');o.className='gameover';o.innerHTML=`<strong>GAME OVER</strong><span>${playerName.value||'Player'} · ${state.score}점 · LEVEL ${state.level}</span>`;game.appendChild(o)}
 
