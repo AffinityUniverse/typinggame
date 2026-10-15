@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Affinity Universe Typing Game</title>
-<meta name="build" content="typinggame-v16-20261009">
+<meta name="build" content="typinggame-v17-20261015">
 <style>
 @font-face{
   font-family:"Pinkfong Baby Shark";
@@ -332,10 +332,185 @@ button{cursor:pointer}
   .app .af-final-consult-link-v35{width:100%;min-width:0;min-height:54px;margin-top:16px;font-size:16px}
 }
 
+
+/* Initial game chooser */
+.app .game-choice-overlay{
+  position:absolute;
+  inset:0;
+  z-index:6500;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px 30px;
+  background:linear-gradient(135deg,rgba(8,13,25,.98),rgba(11,16,30,.99));
+  opacity:1;
+  pointer-events:auto;
+  transition:opacity .28s ease;
+  overflow:auto;
+}
+.app .game-choice-overlay.hide{
+  opacity:0;
+  pointer-events:none;
+}
+.app .game-choice-card{
+  width:min(1080px,96%);
+  padding:58px 48px 50px;
+  border-radius:42px;
+  background:linear-gradient(145deg,#182139 0%,#171f35 58%,#151d32 100%);
+  border:2px solid rgba(78,110,166,.72);
+  color:#fff;
+  text-align:center;
+  box-shadow:0 34px 86px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.025);
+}
+.app .game-choice-kicker{
+  color:#1677ff;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.14em;
+  margin-bottom:18px;
+}
+.app .game-choice-card h2{
+  margin:0;
+  color:#fff;
+  font-size:clamp(38px,4.2vw,58px);
+  line-height:1.2;
+  letter-spacing:-.02em;
+  font-weight:700;
+}
+.app .game-choice-card>p{
+  margin:20px 0 36px;
+  color:#cad4e7;
+  font-size:18px;
+  line-height:1.5;
+}
+.app .game-choice-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+  width:min(820px,100%);
+  margin:0 auto;
+}
+.app .game-choice-option{
+  min-height:220px;
+  padding:30px 22px 28px;
+  border-radius:30px;
+  background:linear-gradient(145deg,#202a43,#1d263d);
+  border:2px solid rgba(78,110,166,.72);
+  color:#fff!important;
+  text-decoration:none!important;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  cursor:pointer;
+  transition:transform .16s ease,background .16s ease,border-color .16s ease;
+  appearance:none;
+}
+.app .game-choice-option:hover{
+  transform:translateY(-3px);
+  background:linear-gradient(145deg,#223253,#1d2b49);
+  border-color:#397cff;
+}
+.app .game-choice-option:active{transform:translateY(-1px)}
+.app .game-choice-option strong{
+  font-size:25px;
+  line-height:1.2;
+  font-weight:700;
+  letter-spacing:-.04em;
+}
+.app .game-choice-option small{
+  color:#b9c6da;
+  font-size:16px;
+  line-height:1.35;
+}
+.app .game-choice-icon{
+  width:88px;
+  min-width:88px;
+  height:82px;
+  border-radius:24px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(145deg,#0867ff,#0b72ff);
+  color:#fff;
+  font-size:34px;
+  font-weight:800;
+  line-height:1;
+}
+.app .game-choice-keyboard{position:relative}
+.app .game-choice-keyboard:before{
+  content:"";
+  width:50px;
+  height:32px;
+  border-radius:6px;
+  background:#eaf2ff;
+  border:2px solid #fff;
+  box-shadow:inset 0 0 0 1px #9eb9e8;
+}
+.app .game-choice-keyboard:after{
+  content:"";
+  position:absolute;
+  width:34px;
+  height:6px;
+  left:50%;
+  bottom:19px;
+  transform:translateX(-50%);
+  border-radius:2px;
+  background:#8fa8d5;
+}
+@media(max-width:760px){
+  .app .game-choice-overlay{padding:16px;align-items:flex-start}
+  .app .game-choice-card{padding:36px 20px 28px;border-radius:28px;margin:auto 0}
+  .app .game-choice-card h2{font-size:32px}
+  .app .game-choice-card>p{font-size:16px;margin:16px 0 24px}
+  .app .game-choice-grid{grid-template-columns:1fr;gap:12px}
+  .app .game-choice-option{
+    min-height:100px;
+    display:grid;
+    grid-template-columns:72px minmax(0,1fr);
+    grid-template-rows:auto auto;
+    text-align:left;
+    justify-items:start;
+    column-gap:14px;
+    padding:14px;
+    border-radius:20px;
+  }
+  .app .game-choice-icon{
+    grid-row:1/3;
+    width:64px;
+    min-width:64px;
+    height:64px;
+    font-size:25px;
+    border-radius:18px;
+  }
+  .app .game-choice-option strong{align-self:end;font-size:20px}
+  .app .game-choice-option small{align-self:start;font-size:13px}
+}
+
 </style>
 </head>
 <body>
 <main class="app" id="app">
+  <div class="game-choice-overlay" id="gameChoiceOverlay" aria-hidden="false">
+    <div class="game-choice-card">
+      <div class="game-choice-kicker">AFFINITY UNIVERSE GAME</div>
+      <h2>어떤 게임을 시작할까요?</h2>
+      <p>원하는 게임을 선택해 주세요.</p>
+      <div class="game-choice-grid">
+        <a class="game-choice-option" href="https://affinityuniverse.github.io/shortcutgame/">
+          <span class="game-choice-icon game-choice-keyboard" aria-hidden="true"></span>
+          <strong>단축키 게임</strong>
+          <small>Affinity 단축키 맞추기</small>
+        </a>
+        <button class="game-choice-option" type="button" id="chooseTypingGame">
+          <span class="game-choice-icon" aria-hidden="true">Aa</span>
+          <strong>타이핑 게임</strong>
+          <small>영어·한국어 단어 타이핑</small>
+        </button>
+      </div>
+    </div>
+  </div>
   <header class="header">
     <div>
       <div class="kicker">AFFINITY UNIVERSE TRAINING</div>
@@ -405,7 +580,7 @@ button{cursor:pointer}
   <div class="af-final-cta-v28" id="typingFinalCta" aria-hidden="true">
     <div class="af-final-cta-card-v28 af-final-game-card-v34">
       <div class="af-final-score-v28" id="typingFinalScore">최종 점수 0점</div>
-      <h2 id="typingFinalTitle">타이핑 게임이 종료되었어요.<br>다른 게임도 하러 가볼까요? <span class="af-final-pad-v47" aria-hidden="true">🎮</span></h2>
+      <h2 id="typingFinalTitle">타이핑 게임이 종료되었어요.<br>다음 게임도 진행해볼까요? <span class="af-final-pad-v47" aria-hidden="true">🚀</span></h2>
       <p id="typingFinalDesc">원하는 게임을 골라 바로 이어서 플레이해보세요.</p>
       <div class="af-final-game-grid-v34">
         <a class="af-final-game-link-v34" href="https://affinityuniverse.github.io/shortcutgame/" target="_blank" rel="noopener noreferrer">
@@ -890,16 +1065,30 @@ function showLevelUp(){
   refreshBgmTempo();
 }
 function miss(c){const stinkX=c.x+(c.el.offsetWidth||230)/2;const stinkY=Math.min(game.clientHeight-90,c.y+60);removeCard(c);state.combo=0;state.lives--;recordMistake(c.word);game.classList.remove('shake');void game.offsetWidth;game.classList.add('shake');makeLostHeart();makeStink(stinkX,stinkY,true);if(state.lives>0)playMissedCardSound();updateUI();if(state.lives<=0)endGame()}
+function hideGameChoice(){
+  const chooser=$('#gameChoiceOverlay');
+  if(!chooser)return;
+  chooser.classList.add('hide');
+  chooser.setAttribute('aria-hidden','true');
+  setTimeout(()=>{chooser.style.display='none'},300);
+}
+function showGameChoice(){
+  const chooser=$('#gameChoiceOverlay');
+  if(!chooser)return;
+  chooser.style.display='flex';
+  requestAnimationFrame(()=>chooser.classList.remove('hide'));
+  chooser.setAttribute('aria-hidden','false');
+}
 function showFinalNextGame(completed){
   const panel=$('#typingFinalCta');
   if(!panel)return;
   const score=$('#typingFinalScore'),title=$('#typingFinalTitle'),desc=$('#typingFinalDesc');
   if(score)score.textContent='최종 점수 '+Math.max(0,Math.round(Number(state.score)||0)).toLocaleString('ko-KR')+'점';
   if(completed){
-    if(title)title.innerHTML='타이핑 훈련을 모두 완료했어요!<br>다른 게임도 하러 가볼까요? <span class="af-final-pad-v47" aria-hidden="true">🎮</span>';
+    if(title)title.innerHTML='타이핑 훈련을 모두 완료했어요!<br>다음 게임도 진행해볼까요? <span class="af-final-pad-v47" aria-hidden="true">🚀</span>';
     if(desc)desc.textContent='모든 레벨을 완료했습니다. 원하는 게임을 골라 바로 이어서 플레이해보세요.';
   }else{
-    if(title)title.innerHTML='타이핑 게임이 종료되었어요.<br>다른 게임도 하러 가볼까요? <span class="af-final-pad-v47" aria-hidden="true">🎮</span>';
+    if(title)title.innerHTML='타이핑 게임이 종료되었어요.<br>다음 게임도 진행해볼까요? <span class="af-final-pad-v47" aria-hidden="true">🚀</span>';
     if(desc)desc.textContent='이번 게임의 기록을 확인하고, 원하는 게임을 골라 이어서 플레이해보세요.';
   }
   panel.classList.add('show');
@@ -959,6 +1148,8 @@ function enterGameFullscreen(){
   }catch(e){}
 }
 function syncFullscreenButton(){const b=$('#fullBtn');if(!b)return;b.textContent=document.fullscreenElement?'전체화면 해제하기':'전체화면으로 보기'}
+const chooseTypingBtn=$('#chooseTypingGame');
+if(chooseTypingBtn)chooseTypingBtn.onclick=()=>{soundButtonClick();hideGameChoice();ready.classList.remove('hide');input.disabled=true;};
 $('#startBtn').onclick=()=>start(true,true);$('#resetBtn').onclick=restart;$('#pauseBtn').onclick=pause;$('#fullBtn').onclick=async()=>{soundButtonClick();const app=$('#app');try{if(!document.fullscreenElement)await app.requestFullscreen?.();else await document.exitFullscreen?.()}catch(e){}syncFullscreenButton()};document.addEventListener('fullscreenchange',syncFullscreenButton);syncFullscreenButton();
 language.onchange=updateUI;category.onchange=updateUI;window.addEventListener('resize',()=>state.cards.forEach(c=>{c.x=Math.min(c.x,game.clientWidth-210);renderCard(c)}));
 renderRankings();renderReview();updateUI();
