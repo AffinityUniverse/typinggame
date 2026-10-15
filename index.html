@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Affinity Universe Typing Game</title>
-<meta name="build" content="typinggame-v17-20261015">
+<meta name="build" content="typinggame-v18-20261015">
 <style>
 @font-face{
   font-family:"Pinkfong Baby Shark";
@@ -438,24 +438,38 @@ button{cursor:pointer}
   font-weight:800;
   line-height:1;
 }
-.app .game-choice-keyboard{position:relative}
-.app .game-choice-keyboard:before{
-  content:"";
-  width:50px;
+.app .game-choice-keyboard{
+  position:relative;
+  width:88px;
+  min-width:88px;
+  padding:0;
+}
+.app .game-choice-keyboard span{
+  width:48px;
   height:32px;
   border-radius:6px;
   background:#eaf2ff;
   border:2px solid #fff;
   box-shadow:inset 0 0 0 1px #9eb9e8;
+  position:relative;
+  display:block;
 }
-.app .game-choice-keyboard:after{
+.app .game-choice-keyboard span:before{
   content:"";
   position:absolute;
-  width:34px;
-  height:6px;
-  left:50%;
-  bottom:19px;
-  transform:translateX(-50%);
+  left:5px;
+  right:5px;
+  top:5px;
+  height:7px;
+  background:repeating-linear-gradient(90deg,#7192ca 0 5px,transparent 5px 8px);
+}
+.app .game-choice-keyboard span:after{
+  content:"";
+  position:absolute;
+  left:7px;
+  right:7px;
+  bottom:5px;
+  height:7px;
   border-radius:2px;
   background:#8fa8d5;
 }
@@ -484,6 +498,8 @@ button{cursor:pointer}
     font-size:25px;
     border-radius:18px;
   }
+  .app .game-choice-keyboard{width:64px;min-width:64px}
+  .app .game-choice-keyboard span{width:42px;height:28px}
   .app .game-choice-option strong{align-self:end;font-size:20px}
   .app .game-choice-option small{align-self:start;font-size:13px}
 }
@@ -499,7 +515,7 @@ button{cursor:pointer}
       <p>원하는 게임을 선택해 주세요.</p>
       <div class="game-choice-grid">
         <a class="game-choice-option" href="https://affinityuniverse.github.io/shortcutgame/">
-          <span class="game-choice-icon game-choice-keyboard" aria-hidden="true"></span>
+          <span class="game-choice-icon game-choice-keyboard" aria-hidden="true"><span></span></span>
           <strong>단축키 게임</strong>
           <small>Affinity 단축키 맞추기</small>
         </a>
