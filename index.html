@@ -333,176 +333,60 @@ button{cursor:pointer}
 }
 
 
-/* Initial game chooser */
-.app .game-choice-overlay{
-  position:absolute;
-  inset:0;
-  z-index:6500;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:28px 30px;
-  background:linear-gradient(135deg,rgba(8,13,25,.98),rgba(11,16,30,.99));
-  opacity:1;
-  pointer-events:auto;
+/* Image-based full-screen game selection */
+.game-choice-overlay{
+  position:fixed!important;inset:0!important;z-index:6500;
+  display:flex;justify-content:center;align-items:stretch;
+  width:100vw;height:100vh;height:100dvh;
+  padding:0!important;margin:0;
+  background:#80caff url("bg.png") center center / cover no-repeat!important;
+  overflow:hidden!important;opacity:1;pointer-events:auto;
   transition:opacity .28s ease;
-  overflow:auto;
 }
-.app .game-choice-overlay.hide{
-  opacity:0;
+.game-choice-overlay.hide{opacity:0;pointer-events:none}
+.game-choice-card{
+  width:100%!important;height:100%!important;max-width:none!important;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  padding:clamp(24px,5vh,64px) 20px clamp(30px,7vh,84px)!important;
+  margin:0!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+}
+.game-choice-title{
+  display:block;width:min(78vw,850px);max-height:48vh;object-fit:contain;
+  animation:gameTitleFloat 3.6s ease-in-out infinite;
+  transform-origin:center center;
+  filter:drop-shadow(0 12px 18px rgba(22,45,85,.12));
   pointer-events:none;
 }
-.app .game-choice-card{
-  width:min(1080px,96%);
-  padding:58px 48px 50px;
-  border-radius:42px;
-  background:linear-gradient(145deg,#182139 0%,#171f35 58%,#151d32 100%);
-  border:2px solid rgba(78,110,166,.72);
-  color:#fff;
-  text-align:center;
-  box-shadow:0 34px 86px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.025);
+@keyframes gameTitleFloat{
+  0%,100%{transform:translate3d(0,0,0) rotate(-1deg)}
+  50%{transform:translate3d(0,-16px,0) rotate(1deg)}
 }
-.app .game-choice-kicker{
-  color:#1677ff;
-  font-size:13px;
-  font-weight:800;
-  letter-spacing:.14em;
-  margin-bottom:18px;
+.game-choice-grid{
+  display:flex!important;justify-content:center;align-items:center;
+  width:min(900px,96vw)!important;gap:clamp(12px,3vw,40px)!important;
+  margin:0!important;flex-shrink:0;
 }
-.app .game-choice-card h2{
-  margin:0;
-  color:#fff;
-  font-size:clamp(38px,4.2vw,58px);
-  line-height:1.2;
-  letter-spacing:-.02em;
-  font-weight:700;
+.game-choice-option{
+  display:block!important;flex:0 1 360px;min-width:0!important;
+  height:auto!important;min-height:0!important;padding:0!important;
+  border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+  appearance:none;cursor:pointer;
+  transition:transform .2s ease,filter .2s ease;
 }
-.app .game-choice-card>p{
-  margin:20px 0 36px;
-  color:#cad4e7;
-  font-size:18px;
-  line-height:1.5;
+.game-choice-option img{display:block;width:100%;height:auto;max-height:24vh;object-fit:contain;pointer-events:none}
+.game-choice-option:hover{transform:translateY(-7px) scale(1.035);filter:brightness(1.06)}
+.game-choice-option:active{transform:translateY(1px) scale(.97)}
+.game-choice-option:focus-visible{outline:3px solid #fff;outline-offset:5px;border-radius:12px!important}
+@media(max-width:700px){
+  .game-choice-card{padding:clamp(20px,5vh,40px) 12px clamp(20px,6vh,50px)!important}
+  .game-choice-title{width:min(94vw,560px);max-height:40vh}
+  .game-choice-grid{gap:10px!important;width:100%!important}
+  .game-choice-option{flex:1 1 0}
+  .game-choice-option img{max-height:20vh}
 }
-.app .game-choice-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:20px;
-  width:min(820px,100%);
-  margin:0 auto;
-}
-.app .game-choice-option{
-  min-height:220px;
-  padding:30px 22px 28px;
-  border-radius:30px;
-  background:linear-gradient(145deg,#202a43,#1d263d);
-  border:2px solid rgba(78,110,166,.72);
-  color:#fff!important;
-  text-decoration:none!important;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  cursor:pointer;
-  transition:transform .16s ease,background .16s ease,border-color .16s ease;
-  appearance:none;
-}
-.app .game-choice-option:hover{
-  transform:translateY(-3px);
-  background:linear-gradient(145deg,#223253,#1d2b49);
-  border-color:#397cff;
-}
-.app .game-choice-option:active{transform:translateY(-1px)}
-.app .game-choice-option strong{
-  font-size:25px;
-  line-height:1.2;
-  font-weight:700;
-  letter-spacing:-.04em;
-}
-.app .game-choice-option small{
-  color:#b9c6da;
-  font-size:16px;
-  line-height:1.35;
-}
-.app .game-choice-icon{
-  width:88px;
-  min-width:88px;
-  height:82px;
-  border-radius:24px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(145deg,#0867ff,#0b72ff);
-  color:#fff;
-  font-size:34px;
-  font-weight:800;
-  line-height:1;
-}
-.app .game-choice-keyboard{
-  position:relative;
-  width:88px;
-  min-width:88px;
-  padding:0;
-}
-.app .game-choice-keyboard span{
-  width:48px;
-  height:32px;
-  border-radius:6px;
-  background:#eaf2ff;
-  border:2px solid #fff;
-  box-shadow:inset 0 0 0 1px #9eb9e8;
-  position:relative;
-  display:block;
-}
-.app .game-choice-keyboard span:before{
-  content:"";
-  position:absolute;
-  left:5px;
-  right:5px;
-  top:5px;
-  height:7px;
-  background:repeating-linear-gradient(90deg,#7192ca 0 5px,transparent 5px 8px);
-}
-.app .game-choice-keyboard span:after{
-  content:"";
-  position:absolute;
-  left:7px;
-  right:7px;
-  bottom:5px;
-  height:7px;
-  border-radius:2px;
-  background:#8fa8d5;
-}
-@media(max-width:760px){
-  .app .game-choice-overlay{padding:16px;align-items:flex-start}
-  .app .game-choice-card{padding:36px 20px 28px;border-radius:28px;margin:auto 0}
-  .app .game-choice-card h2{font-size:32px}
-  .app .game-choice-card>p{font-size:16px;margin:16px 0 24px}
-  .app .game-choice-grid{grid-template-columns:1fr;gap:12px}
-  .app .game-choice-option{
-    min-height:100px;
-    display:grid;
-    grid-template-columns:72px minmax(0,1fr);
-    grid-template-rows:auto auto;
-    text-align:left;
-    justify-items:start;
-    column-gap:14px;
-    padding:14px;
-    border-radius:20px;
-  }
-  .app .game-choice-icon{
-    grid-row:1/3;
-    width:64px;
-    min-width:64px;
-    height:64px;
-    font-size:25px;
-    border-radius:18px;
-  }
-  .app .game-choice-keyboard{width:64px;min-width:64px}
-  .app .game-choice-keyboard span{width:42px;height:28px}
-  .app .game-choice-option strong{align-self:end;font-size:20px}
-  .app .game-choice-option small{align-self:start;font-size:13px}
-}
+@media(prefers-reduced-motion:reduce){.game-choice-title{animation:none}.game-choice-option{transition:none}}
 
 </style>
 </head>
@@ -510,19 +394,13 @@ button{cursor:pointer}
 <main class="app" id="app">
   <div class="game-choice-overlay" id="gameChoiceOverlay" aria-hidden="false">
     <div class="game-choice-card">
-      <div class="game-choice-kicker">AFFINITY UNIVERSE GAME</div>
-      <h2>어떤 게임을 시작할까요?</h2>
-      <p>원하는 게임을 선택해 주세요.</p>
+      <img class="game-choice-title" src="title.png" alt="AFFINITY GAME UNIVERSE" draggable="false">
       <div class="game-choice-grid">
-        <a class="game-choice-option" href="https://affinityuniverse.github.io/shortcutgame/">
-          <span class="game-choice-icon game-choice-keyboard" aria-hidden="true"><span></span></span>
-          <strong>단축키 게임</strong>
-          <small>Affinity 단축키 맞추기</small>
+        <a class="game-choice-option" href="https://affinityuniverse.github.io/shortcutgame/" aria-label="단축키 게임 시작">
+          <img src="btn1.png" alt="단축키 게임" draggable="false">
         </a>
-        <button class="game-choice-option" type="button" id="chooseTypingGame">
-          <span class="game-choice-icon" aria-hidden="true">Aa</span>
-          <strong>타이핑 게임</strong>
-          <small>영어·한국어 단어 타이핑</small>
+        <button class="game-choice-option" type="button" id="chooseTypingGame" aria-label="타이핑 게임 시작">
+          <img src="btn2.png" alt="타이핑 게임" draggable="false">
         </button>
       </div>
     </div>
